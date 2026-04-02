@@ -11,6 +11,7 @@ body {
   max-width: 850px;
   margin: 20px auto;
   padding: 20px;
+  line-height: 1.4;
 }
 
 .container {
@@ -32,6 +33,13 @@ button {
 
 .hidden {
   display: none;
+}
+
+.links {
+  background: #f8f8f8;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 20px;
 }
 
 .disclaimer {
@@ -64,6 +72,31 @@ button {
 <p><strong>Proposed Mill Rate:</strong> 26.46</p>
 
 <hr>
+
+<h3>General Instructions</h3>
+
+<div class="links">
+  <p>
+    <strong>Real Estate:</strong><br>
+    <a href="https://gis.vgsi.com/staffordct/" target="_blank" rel="noopener noreferrer">
+      Vision Government Solutions Property Search
+    </a><br><br>
+
+    Search for your property by address.<br>
+    Use the <strong>2025 Total Assessed Value</strong> and <strong>2024 Assessed Value</strong>.<br><br>
+
+    <strong>Motor Vehicle:</strong><br>
+    <a href="https://www.mytaxbill.org/inet/bill/home.do?town=stafford" target="_blank" rel="noopener noreferrer">
+      Stafford Tax Bill Lookup
+    </a><br><br>
+
+    Search by name or property location and use the <strong>Net Assessment</strong>.
+  </p>
+</div>
+
+<hr>
+
+<h3>Input Values</h3>
 
 <label id="oldLabel">2024 Assessed Value</label>
 <input type="number" id="oldValue">

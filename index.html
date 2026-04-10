@@ -12,6 +12,47 @@ body {
   margin: 20px auto;
   padding: 20px;
   line-height: 1.4;
+  @media print {
+
+  body {
+    max-width: 100%;
+    margin: 0;
+    padding: 10px;
+  }
+
+  button {
+    display: none;
+  }
+
+  .links {
+    background: none;
+    border: none;
+    padding: 0;
+  }
+
+  .section {
+    page-break-inside: avoid;
+  }
+
+  .total-box {
+    border: 2px solid black;
+  }
+
+  input {
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-weight: bold;
+  }
+
+  input::placeholder {
+    color: transparent;
+  }
+
+  .disclaimer {
+    font-size: 11px;
+  }
+
 }
 
 .container {
@@ -138,7 +179,7 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
 
 <hr>
 
-<div class="results" id="printArea">
+<div class="results">
   <h3>Individual Results</h3>
 
   <p><strong>Real Estate Current Annual:</strong> <span id="realOldAnnual">-</span></p>
@@ -168,7 +209,9 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
   <p><strong>Percent Change:</strong> <span id="percentChange">-</span></p>
   <p><strong>Monthly Change:</strong> <span id="monthlyChange">-</span></p>
 </div>
-  <button onclick="printResults()" style="margin-top:15px;">Print Results</button>
+<button onclick="window.print()" style="margin-top:15px;">
+  Print / Save as PDF
+</button>
 <div style="margin-top:20px;text-align:center;font-size:14px;">
   <p><strong>Page Views</strong></p>
   <!-- hitwebcounter Code START -->
@@ -260,16 +303,6 @@ function calc(){
   document.getElementById('percentChange').innerText = percent.toFixed(2) + "%";
 }
 
-function printResults() {
-  var content = document.getElementById('printArea').innerHTML;
-  var original = document.body.innerHTML;
-
-  document.body.innerHTML = content;
-  window.print();
-  document.body.innerHTML = original;
-
-  location.reload();
-}
 </script>
 
 </body>

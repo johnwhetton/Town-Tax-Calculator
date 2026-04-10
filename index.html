@@ -8,7 +8,7 @@
 <style>
 body {
   font-family: Arial, sans-serif;
-  max-width: 850px;
+  max-width: 950px;
   margin: 20px auto;
   padding: 20px;
   line-height: 1.4;
@@ -20,7 +20,15 @@ body {
   padding: 20px;
 }
 
-input, select {
+.section {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 20px;
+  background: #fafafa;
+}
+
+input[type="number"] {
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
@@ -54,56 +62,74 @@ button {
   color: red;
   font-weight: bold;
 }
+
+.results p {
+  margin: 8px 0;
+}
+
+.total-box {
+  border: 2px solid #bbb;
+  padding: 15px;
+  background: #f3f3f3;
+  margin-top: 20px;
+  border-radius: 6px;
+}
 </style>
 </head>
+
 <body>
 
 <div class="container">
 
 <h2>Stafford Connecticut Mill Rate Comparison Calculator</h2>
 
-<label>Select Tax Type</label>
-<select id="taxType" onchange="updateMode()">
-  <option value="real_estate">Real Estate</option>
-  <option value="motor_vehicle">Motor Vehicle</option>
-</select>
-
-<p><strong>Current Mill Rate:</strong> <span id="currentRate">38.59</span></p>
-<p><strong>Proposed Mill Rate:</strong> 26.44</p>
-
-<hr>
-
-<h3>General Instructions</h3>
-
 <div class="links">
-  <p>
-    <strong>Real Estate:</strong><br>
-    <a href="https://gis.vgsi.com/staffordct/" target="_blank" rel="noopener noreferrer">
-      Vision Government Solutions Property Search
-    </a><br><br>
+<p>
+<strong>Real Estate:</strong><br>
+<a href="https://gis.vgsi.com/staffordct/" target="_blank">Vision Government Solutions Property Search</a><br><br>
 
-    Search for your property by address.<br>
-    Use the <strong>2025 Total Assessed Value</strong> and <strong>2024 Assessed Value</strong>.<br><br>
+Search for your property by address.<br>
+Use the <strong>2025 Total Assessed Value</strong> and the <strong>2024 Assessed Value</strong>.<br><br>
 
-    <strong>Motor Vehicle:</strong><br>
-    <a href="https://www.mytaxbill.org/inet/bill/home.do?town=stafford" target="_blank" rel="noopener noreferrer">
-      Stafford Tax Bill Lookup
-    </a><br><br>
+<strong>Motor Vehicle:</strong><br>
+<a href="https://www.mytaxbill.org/inet/bill/home.do?town=stafford" target="_blank">Stafford Tax Bill Lookup</a><br><br>
 
-    Search by name or property location and use the <strong>Net Assessment</strong>.
-  </p>
+Search by name or property location and use the <strong>Net Assessment</strong> from the most recent motor vehicle tax bill.
+</p>
 </div>
 
-<hr>
+<div class="section">
+<h3>Real Estate</h3>
+<p>Current: 38.59 | Proposed: 26.44</p>
 
-<h3>Input Values</h3>
+<label>2024 Assessed Value</label>
+<input type="number" id="realOld">
 
-<label id="oldLabel">2024 Assessed Value</label>
-<input type="number" id="oldValue">
+<label>2025 Assessed Value</label>
+<input type="number" id="realNew">
+</div>
 
-<div id="newValueContainer">
-  <label>2025 Assessed Value</label>
-  <input type="number" id="newValue">
+<div class="section">
+<h3>Motor Vehicles</h3>
+<p>Current: 32.46 | Proposed: 26.44</p>
+
+<input type="number" id="mv1" placeholder="Vehicle 1">
+<input type="number" id="mv2" placeholder="Vehicle 2">
+<input type="number" id="mv3" placeholder="Vehicle 3">
+<input type="number" id="mv4" placeholder="Vehicle 4">
+
+<p><strong>Total MV Assessment:</strong> <span id="mvTotal">-</span></p>
+</div>
+
+<div class="section">
+<label>
+<input type="checkbox" id="sdToggle"> Include Service District
+</label>
+
+<div id="sdBox" class="hidden">
+<p>Current: 3.05 | Proposed: 2.06</p>
+<p style="font-size:13px;">Applies to both real estate and motor vehicle.</p>
+</div>
 </div>
 
 <button onclick="calc()">Calculate</button>
@@ -112,81 +138,121 @@ button {
 
 <hr>
 
-<h3>Results</h3>
+<div class="results">
+  <h3>Individual Results</h3>
 
-<p>Old Annual: <span id="oldAnnual">-</span></p>
-<p>New Annual: <span id="newAnnual">-</span></p>
-<p>Annual Change: <span id="changeAnnual">-</span></p>
+  <p><strong>Real Estate Current Annual:</strong> <span id="realOldAnnual">-</span></p>
+  <p><strong>Real Estate Proposed Annual:</strong> <span id="realNewAnnual">-</span></p>
+  <p><strong>Real Estate Annual Change:</strong> <span id="realChangeAnnual">-</span></p>
 
-<p>Old Monthly: <span id="oldMonthly">-</span></p>
-<p>New Monthly: <span id="newMonthly">-</span></p>
-<p>Monthly Change: <span id="changeMonthly">-</span></p>
+  <br>
+
+  <p><strong>Motor Vehicle Current Annual:</strong> <span id="mvOldAnnual">-</span></p>
+  <p><strong>Motor Vehicle Proposed Annual:</strong> <span id="mvNewAnnual">-</span></p>
+  <p><strong>Motor Vehicle Annual Change:</strong> <span id="mvChangeAnnual">-</span></p>
+
+  <div id="sdResults" class="hidden">
+    <br>
+    <p><strong>Service District Current Annual:</strong> <span id="sdOldAnnual">-</span></p>
+    <p><strong>Service District Proposed Annual:</strong> <span id="sdNewAnnual">-</span></p>
+    <p><strong>Service District Annual Change:</strong> <span id="sdChangeAnnual">-</span></p>
+  </div>
+</div>
+
+<div class="total-box">
+  <h3>Combined Totals</h3>
+
+  <p><strong>Current Annual:</strong> <span id="oldTotal">-</span></p>
+  <p><strong>Proposed Annual:</strong> <span id="newTotal">-</span></p>
+  <p><strong>Annual Change:</strong> <span id="changeTotal">-</span></p>
+  <p><strong>Percent Change:</strong> <span id="percentChange">-</span></p>
+  <p><strong>Monthly Change:</strong> <span id="monthlyChange">-</span></p>
+</div>
 
 <div class="disclaimer">
-<strong>Important:</strong> This calculator is provided for reference purposes only. Estimated taxes are based solely on assessed values and mill rates and do not account for any exemptions, credits, abatements, or other adjustments that may apply to your property. Actual tax bills may vary. The proposed mill rate is subject to final adoption.
+<strong>Important:</strong> This calculator is provided for reference purposes only. Estimated taxes are based solely on assessed values and mill rates and do not account for any exemptions, credits, abatements, or other adjustments that may apply to your property. Actual tax bills may vary. The proposed mill rates are subject to final adoption.
 </div>
 
 </div>
 
 <script>
 function money(x){
-  return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(x);
+  return new Intl.NumberFormat('en-US', {
+    style:'currency',
+    currency:'USD'
+  }).format(x);
 }
 
-function updateMode(){
-  const type = document.getElementById('taxType').value;
+document.getElementById('sdToggle').onchange = function(){
+  document.getElementById('sdBox').classList.toggle('hidden');
+  document.getElementById('sdResults').classList.toggle('hidden');
+};
 
-  if(type === 'motor_vehicle'){
-    document.getElementById('newValueContainer').classList.add('hidden');
-    document.getElementById('currentRate').textContent = "32.46";
-    document.getElementById('oldLabel').textContent = "Net Assessment (Motor Vehicle)";
-  } else {
-    document.getElementById('newValueContainer').classList.remove('hidden');
-    document.getElementById('currentRate').textContent = "38.59";
-    document.getElementById('oldLabel').textContent = "2024 Assessed Value";
-  }
+function getVal(id){
+  let v = parseFloat(document.getElementById(id).value);
+  return isNaN(v) ? 0 : v;
 }
 
 function calc(){
-  const type = document.getElementById('taxType').value;
-  const oldVal = parseFloat(document.getElementById('oldValue').value);
-  let newVal = parseFloat(document.getElementById('newValue').value);
 
-  const error = document.getElementById('error');
-  error.textContent = "";
+  let realOld = getVal('realOld');
+  let realNew = getVal('realNew');
 
-  if(isNaN(oldVal)){
-    error.textContent = "Please enter a value.";
+  let mvTotal = getVal('mv1') + getVal('mv2') + getVal('mv3') + getVal('mv4');
+  document.getElementById('mvTotal').innerText = money(mvTotal);
+
+  if(!realOld || !realNew){
+    document.getElementById('error').innerText = "Enter real estate values.";
     return;
   }
 
-  let oldMill, newMill = 26.44;
+  document.getElementById('error').innerText = "";
 
-  if(type === 'motor_vehicle'){
-    oldMill = 32.46;
-    newVal = oldVal;
-  } else {
-    oldMill = 38.59;
+  let sdOn = document.getElementById('sdToggle').checked;
 
-    if(isNaN(newVal)){
-      error.textContent = "Please enter both values.";
-      return;
-    }
+  let realOldAnnual = (realOld/1000) * 38.59;
+  let realNewAnnual = (realNew/1000) * 26.44;
+
+  let mvOldAnnual = (mvTotal/1000) * 32.46;
+  let mvNewAnnual = (mvTotal/1000) * 26.44;
+
+  let sdOldAnnual = 0;
+  let sdNewAnnual = 0;
+
+  if(sdOn){
+    sdOldAnnual = (realOld/1000) * 3.05 + (mvTotal/1000) * 3.05;
+    sdNewAnnual = (realNew/1000) * 2.06 + (mvTotal/1000) * 2.06;
   }
 
-  const oldAnnual = (oldVal/1000)*oldMill;
-  const newAnnual = (newVal/1000)*newMill;
+  document.getElementById('realOldAnnual').innerText = money(realOldAnnual);
+  document.getElementById('realNewAnnual').innerText = money(realNewAnnual);
+  document.getElementById('realChangeAnnual').innerText = money(realNewAnnual - realOldAnnual);
 
-  document.getElementById('oldAnnual').innerText = money(oldAnnual);
-  document.getElementById('newAnnual').innerText = money(newAnnual);
-  document.getElementById('changeAnnual').innerText = money(newAnnual-oldAnnual);
+  document.getElementById('mvOldAnnual').innerText = money(mvOldAnnual);
+  document.getElementById('mvNewAnnual').innerText = money(mvNewAnnual);
+  document.getElementById('mvChangeAnnual').innerText = money(mvNewAnnual - mvOldAnnual);
 
-  document.getElementById('oldMonthly').innerText = money(oldAnnual/12);
-  document.getElementById('newMonthly').innerText = money(newAnnual/12);
-  document.getElementById('changeMonthly').innerText = money((newAnnual-oldAnnual)/12);
+  if(sdOn){
+    document.getElementById('sdOldAnnual').innerText = money(sdOldAnnual);
+    document.getElementById('sdNewAnnual').innerText = money(sdNewAnnual);
+    document.getElementById('sdChangeAnnual').innerText = money(sdNewAnnual - sdOldAnnual);
+  } else {
+    document.getElementById('sdOldAnnual').innerText = "-";
+    document.getElementById('sdNewAnnual').innerText = "-";
+    document.getElementById('sdChangeAnnual').innerText = "-";
+  }
+
+  let oldTotal = realOldAnnual + mvOldAnnual + sdOldAnnual;
+  let newTotal = realNewAnnual + mvNewAnnual + sdNewAnnual;
+  let change = newTotal - oldTotal;
+  let percent = (oldTotal > 0) ? ((change / oldTotal) * 100) : 0;
+
+  document.getElementById('oldTotal').innerText = money(oldTotal);
+  document.getElementById('newTotal').innerText = money(newTotal);
+  document.getElementById('changeTotal').innerText = money(change);
+  document.getElementById('monthlyChange').innerText = money(change / 12);
+  document.getElementById('percentChange').innerText = percent.toFixed(2) + "%";
 }
-
-updateMode();
 </script>
 
 </body>

@@ -138,7 +138,7 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
 
 <hr>
 
-<div class="results">
+<div class="results" id="printArea">
   <h3>Individual Results</h3>
 
   <p><strong>Real Estate Current Annual:</strong> <span id="realOldAnnual">-</span></p>
@@ -168,6 +168,7 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
   <p><strong>Percent Change:</strong> <span id="percentChange">-</span></p>
   <p><strong>Monthly Change:</strong> <span id="monthlyChange">-</span></p>
 </div>
+  <button onclick="printResults()" style="margin-top:15px;">Print Results</button>
 <div style="margin-top:20px;text-align:center;font-size:14px;">
   <p><strong>Page Views</strong></p>
   <!-- hitwebcounter Code START -->
@@ -258,6 +259,18 @@ function calc(){
   document.getElementById('monthlyChange').innerText = money(change / 12);
   document.getElementById('percentChange').innerText = percent.toFixed(2) + "%";
 }
+  <script>
+function printResults() {
+  var content = document.getElementById('printArea').innerHTML;
+  var original = document.body.innerHTML;
+
+  document.body.innerHTML = content;
+  window.print();
+  document.body.innerHTML = original;
+
+  location.reload();
+}
+</script>
 </script>
 
 </body>

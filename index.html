@@ -302,7 +302,6 @@ function calc(){
 }
 
 function printSummary() {
-
   const realOldAnnual = document.getElementById('realOldAnnual').innerText;
   const realNewAnnual = document.getElementById('realNewAnnual').innerText;
   const realChangeAnnual = document.getElementById('realChangeAnnual').innerText;
@@ -325,7 +324,6 @@ function printSummary() {
 
   const now = new Date().toLocaleString();
 
-  // Mill Rates (hard-coded to match your calculator)
   const ratesHtml = `
     <div class="summary-section">
       <h3>Mill Rates Used</h3>
@@ -353,7 +351,12 @@ function printSummary() {
     </div>
   ` : '';
 
-  const printWindow = window.open('', '_blank', 'width=900,height=700');
+  const printWindow = window.open('', '_blank', 'width=1000,height=700');
+
+  if (!printWindow) {
+    alert('Pop-up blocked. Please allow pop-ups for this page and try again.');
+    return;
+  }
 
   printWindow.document.write(`
     <!DOCTYPE html>
@@ -362,107 +365,116 @@ function printSummary() {
       <meta charset="UTF-8">
       <title>Stafford Connecticut Mill Rate Comparison Summary</title>
       <style>
+        @page {
+          size: letter landscape;
+          margin: 0.35in;
+        }
+
         body {
           font-family: Arial, sans-serif;
-          margin: 24px;
+          margin: 0;
           color: #000;
+          font-size: 11px;
+          line-height: 1.2;
         }
 
         h1 {
-          font-size: 14px;
-          margin-bottom: 4px;
+          font-size: 18px;
+          margin: 0 0 4px 0;
         }
 
         .subhead {
-          font-size: 13px;
-          margin-bottom: 18px;
+          font-size: 10px;
+          margin-bottom: 8px;
         }
 
         .summary-section {
-          margin-bottom: 18px;
+          margin-bottom: 8px;
         }
 
         h3 {
-          font-size: 14px;
-          margin-bottom: 8px;
+          font-size: 12px;
+          margin: 0 0 4px 0;
           border-bottom: 1px solid #000;
+          padding-bottom: 2px;
         }
 
         table {
           width: 100%;
           border-collapse: collapse;
+          margin-bottom: 2px;
         }
 
         td {
-          padding: 6px 8px;
-          border: 1px solid #ccc;
+          padding: 3px 5px;
+          border: 1px solid #bbb;
+          font-size: 10px;
         }
 
         td:first-child {
           font-weight: bold;
-          width: 70%;
+          width: 72%;
         }
 
         .totals {
           border: 2px solid #000;
-          padding: 12px;
-          margin-top: 10px;
+          padding: 6px;
+          margin-top: 6px;
         }
 
         .disclaimer {
-          margin-top: 18px;
-          font-size: 11px;
+          margin-top: 8px;
+          font-size: 9px;
         }
 
-        @page {
-          size: letter;
-          margin: 0.5in;
+        .page-wrap {
+          max-width: 100%;
         }
       </style>
     </head>
     <body>
+      <div class="page-wrap">
+        <h1>Stafford Connecticut Mill Rate Comparison Summary</h1>
+        <div class="subhead">Generated: ${now}</div>
 
-      <h1>Stafford Connecticut Mill Rate Comparison Summary</h1>
-      <div class="subhead">Generated: ${now}</div>
+        ${ratesHtml}
 
-      ${ratesHtml}
+        <div class="summary-section">
+          <h3>Real Estate</h3>
+          <table>
+            <tr><td>Current Annual</td><td>${realOldAnnual}</td></tr>
+            <tr><td>Proposed Annual</td><td>${realNewAnnual}</td></tr>
+            <tr><td>Annual Change</td><td>${realChangeAnnual}</td></tr>
+          </table>
+        </div>
 
-      <div class="summary-section">
-        <h3>Real Estate</h3>
-        <table>
-          <tr><td>Current Annual</td><td>${realOldAnnual}</td></tr>
-          <tr><td>Proposed Annual</td><td>${realNewAnnual}</td></tr>
-          <tr><td>Annual Change</td><td>${realChangeAnnual}</td></tr>
-        </table>
+        <div class="summary-section">
+          <h3>Motor Vehicle</h3>
+          <table>
+            <tr><td>Total Net Assessment Used</td><td>${mvTotal}</td></tr>
+            <tr><td>Current Annual</td><td>${mvOldAnnual}</td></tr>
+            <tr><td>Proposed Annual</td><td>${mvNewAnnual}</td></tr>
+            <tr><td>Annual Change</td><td>${mvChangeAnnual}</td></tr>
+          </table>
+        </div>
+
+        ${serviceDistrictHtml}
+
+        <div class="totals">
+          <h3>Combined Totals</h3>
+          <table>
+            <tr><td>Current Annual</td><td>${oldTotal}</td></tr>
+            <tr><td>Proposed Annual</td><td>${newTotal}</td></tr>
+            <tr><td>Annual Change</td><td>${changeTotal}</td></tr>
+            <tr><td>Percent Change</td><td>${percentChange}</td></tr>
+            <tr><td>Monthly Change</td><td>${monthlyChange}</td></tr>
+          </table>
+        </div>
+
+        <div class="disclaimer">
+          <strong>Important:</strong> This calculator is provided for reference purposes only. Estimated taxes are based solely on assessed values and mill rates and do not account for exemptions, credits, abatements, or other adjustments that may apply to your property. Actual tax bills may vary. The proposed mill rates are subject to final adoption.
+        </div>
       </div>
-
-      <div class="summary-section">
-        <h3>Motor Vehicle</h3>
-        <table>
-          <tr><td>Total Net Assessment Used</td><td>${mvTotal}</td></tr>
-          <tr><td>Current Annual</td><td>${mvOldAnnual}</td></tr>
-          <tr><td>Proposed Annual</td><td>${mvNewAnnual}</td></tr>
-          <tr><td>Annual Change</td><td>${mvChangeAnnual}</td></tr>
-        </table>
-      </div>
-
-      ${serviceDistrictHtml}
-
-      <div class="totals">
-        <h3>Combined Totals</h3>
-        <table>
-          <tr><td>Current Annual</td><td>${oldTotal}</td></tr>
-          <tr><td>Proposed Annual</td><td>${newTotal}</td></tr>
-          <tr><td>Annual Change</td><td>${changeTotal}</td></tr>
-          <tr><td>Percent Change</td><td>${percentChange}</td></tr>
-          <tr><td>Monthly Change</td><td>${monthlyChange}</td></tr>
-        </table>
-      </div>
-
-      <div class="disclaimer">
-        <strong>Important:</strong> This calculator is provided for reference purposes only. Estimated taxes are based solely on assessed values and mill rates and do not account for exemptions, credits, or adjustments. Actual tax bills may vary.
-      </div>
-
     </body>
     </html>
   `);
@@ -470,9 +482,9 @@ function printSummary() {
   printWindow.document.close();
   printWindow.focus();
 
-  setTimeout(() => {
+  setTimeout(function () {
     printWindow.print();
-  }, 300);
+  }, 500);
 }
 
 </script>

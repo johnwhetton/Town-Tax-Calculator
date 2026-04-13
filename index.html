@@ -302,6 +302,7 @@ function calc(){
 }
 
 function printSummary() {
+
   const realOldAnnual = document.getElementById('realOldAnnual').innerText;
   const realNewAnnual = document.getElementById('realNewAnnual').innerText;
   const realChangeAnnual = document.getElementById('realChangeAnnual').innerText;
@@ -323,6 +324,23 @@ function printSummary() {
   const monthlyChange = document.getElementById('monthlyChange').innerText;
 
   const now = new Date().toLocaleString();
+
+  // Mill Rates (hard-coded to match your calculator)
+  const ratesHtml = `
+    <div class="summary-section">
+      <h3>Mill Rates Used</h3>
+      <table>
+        <tr><td>Real Estate (Current)</td><td>38.59</td></tr>
+        <tr><td>Real Estate (Proposed)</td><td>26.44</td></tr>
+        <tr><td>Motor Vehicle (Current)</td><td>32.46</td></tr>
+        <tr><td>Motor Vehicle (Proposed)</td><td>26.44</td></tr>
+        ${sdOn ? `
+          <tr><td>Service District (Current)</td><td>3.05</td></tr>
+          <tr><td>Service District (Proposed)</td><td>2.06</td></tr>
+        ` : ''}
+      </table>
+    </div>
+  `;
 
   const serviceDistrictHtml = sdOn ? `
     <div class="summary-section">
@@ -348,7 +366,6 @@ function printSummary() {
           font-family: Arial, sans-serif;
           margin: 24px;
           color: #000;
-          line-height: 1.3;
         }
 
         h1 {
@@ -369,24 +386,21 @@ function printSummary() {
           font-size: 16px;
           margin-bottom: 8px;
           border-bottom: 1px solid #000;
-          padding-bottom: 4px;
         }
 
         table {
           width: 100%;
           border-collapse: collapse;
-          margin-bottom: 8px;
         }
 
         td {
           padding: 6px 8px;
           border: 1px solid #ccc;
-          font-size: 14px;
         }
 
         td:first-child {
-          width: 70%;
           font-weight: bold;
+          width: 70%;
         }
 
         .totals {
@@ -404,17 +418,14 @@ function printSummary() {
           size: letter;
           margin: 0.5in;
         }
-
-        @media print {
-          body {
-            margin: 0;
-          }
-        }
       </style>
     </head>
     <body>
+
       <h1>Stafford Connecticut Mill Rate Comparison Summary</h1>
       <div class="subhead">Generated: ${now}</div>
+
+      ${ratesHtml}
 
       <div class="summary-section">
         <h3>Real Estate</h3>
@@ -449,8 +460,9 @@ function printSummary() {
       </div>
 
       <div class="disclaimer">
-        <strong>Important:</strong> This calculator is provided for reference purposes only. Estimated taxes are based solely on assessed values and mill rates and do not account for any exemptions, credits, abatements, or other adjustments that may apply to your property. Actual tax bills may vary. The proposed mill rates are subject to final adoption.
+        <strong>Important:</strong> This calculator is provided for reference purposes only. Estimated taxes are based solely on assessed values and mill rates and do not account for exemptions, credits, or adjustments. Actual tax bills may vary.
       </div>
+
     </body>
     </html>
   `);
@@ -458,9 +470,10 @@ function printSummary() {
   printWindow.document.close();
   printWindow.focus();
 
-  setTimeout(function() {
+  setTimeout(() => {
     printWindow.print();
   }, 300);
+}
 }
 </script>
 

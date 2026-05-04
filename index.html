@@ -141,7 +141,7 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
 
 <div class="section">
 <h3>Real Estate</h3>
-<p>Current: 38.59 | Proposed: 26.01</p>
+<p>Current: 38.59 | Proposed: 26.02</p>
 
 <label>2024 Assessed Value</label>
 <input type="number" id="realOld">
@@ -152,7 +152,7 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
 
 <div class="section">
 <h3>Motor Vehicles</h3>
-<p>Current: 32.46 | Proposed: 26.01</p>
+<p>Current: 32.46 | Proposed: 26.02</p>
 
 <input type="number" id="mv1" placeholder="Vehicle 1">
 <input type="number" id="mv2" placeholder="Vehicle 2">
@@ -258,10 +258,10 @@ function calc(){
   let sdOn = document.getElementById('sdToggle').checked;
 
   let realOldAnnual = (realOld/1000) * 38.59;
-  let realNewAnnual = (realNew/1000) * 26.01;
+  let realNewAnnual = (realNew/1000) * 26.02;
 
   let mvOldAnnual = (mvTotal/1000) * 32.46;
-  let mvNewAnnual = (mvTotal/1000) * 26.01;
+  let mvNewAnnual = (mvTotal/1000) * 26.02;
 
   let sdOldAnnual = 0;
   let sdNewAnnual = 0;
@@ -329,9 +329,9 @@ function printSummary() {
       <h3>Mill Rates Used</h3>
       <table>
         <tr><td>Real Estate (Current)</td><td>38.59</td></tr>
-        <tr><td>Real Estate (Proposed)</td><td>26.01</td></tr>
+        <tr><td>Real Estate (Proposed)</td><td>26.02</td></tr>
         <tr><td>Motor Vehicle (Current)</td><td>32.46</td></tr>
-        <tr><td>Motor Vehicle (Proposed)</td><td>26.01</td></tr>
+        <tr><td>Motor Vehicle (Proposed)</td><td>26.02</td></tr>
         ${sdOn ? `
           <tr><td>Service District (Current)</td><td>3.05</td></tr>
           <tr><td>Service District (Proposed)</td><td>2.06</td></tr>

@@ -259,7 +259,7 @@ Current Service District tax applies only to real estate. Under the proposed mil
 <div class="section comparison-box">
   <h3>Proposed Mill Rate Timeline Comparison</h3>
   <p style="font-size:13px;">
-    This section compares the current estimated tax impact with the original proposed rate, the first revised proposed rate, and the current proposed rate.
+    This section compares the total estimated tax impact, including Service District taxes when selected, with the original proposed rate, the first revised proposed rate, and the current proposed rate.
   </p>
 
   <table class="comparison-table">
@@ -472,10 +472,18 @@ function calc(){
   setPercent('percentChange', percent);
   setMoney('monthlyChange', change / 12);
 
-  const currentCombinedTax = realOldAnnual + mvOldAnnual;
-  const originalProposalTax = ((realNew + mvTotal) / 1000) * 26.44;
-  const firstRevisedTax = ((realNew + mvTotal) / 1000) * 26.02;
-  const currentProposalTax = ((realNew + mvTotal) / 1000) * 25.66;
+  let currentCombinedTax = realOldAnnual + mvOldAnnual;
+  let originalProposalTax = ((realNew + mvTotal) / 1000) * 26.44;
+  let firstRevisedTax = ((realNew + mvTotal) / 1000) * 26.02;
+  let currentProposalTax = ((realNew + mvTotal) / 1000) * 25.66;
+
+  if(sdOn){
+    currentCombinedTax += sdOldAnnual;
+
+    originalProposalTax += ((realNew / 1000) * 2.06) + ((mvTotal / 1000) * 2.06);
+    firstRevisedTax += ((realNew / 1000) * 2.06) + ((mvTotal / 1000) * 2.06);
+    currentProposalTax += ((realNew / 1000) * 2.06) + ((mvTotal / 1000) * 2.06);
+  }
 
   setMoney('timelineCurrentTax', currentCombinedTax);
   setMoney('timelineCurrentDiff', 0);

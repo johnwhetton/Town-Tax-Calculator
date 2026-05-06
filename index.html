@@ -685,6 +685,11 @@ function printSummary() {
   printWindow.document.close();
   printWindow.focus();
 
+  if (!printWindow || printWindow.closed || typeof printWindow.closed == 'undefined') {
+    window.print();
+    return;
+  }
+
   setTimeout(function () {
     printWindow.print();
   }, 500);

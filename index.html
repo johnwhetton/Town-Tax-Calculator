@@ -153,6 +153,10 @@ button {
 
 <h2>Stafford Connecticut Mill Rate Comparison Calculator</h2>
 
+<p style="margin-top:-8px;font-size:14px;color:#555;">
+Updated after the first failed referendum on 5/5/2026 where 579 voted yes and 1,026 voted no.
+</p>
+
 <div class="links">
 <p>
 <strong>Real Estate:</strong><br>
@@ -233,6 +237,56 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
 
 
 
+
+<div class="section comparison-box">
+  <h3>Proposed Mill Rate Timeline Comparison</h3>
+  <p style="font-size:13px;">
+    This section compares the current estimated tax impact with the original proposed rate, the first revised proposed rate, and the current proposed rate.
+  </p>
+
+  <table class="comparison-table">
+    <thead>
+      <tr>
+        <th>Scenario</th>
+        <th>Mill Rate</th>
+        <th>Estimated Annual Tax</th>
+        <th>Difference From Current</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Current</strong></td>
+        <td>Real Estate: 38.59<br>Motor Vehicle: 32.46</td>
+        <td id="timelineCurrentTax">-</td>
+        <td id="timelineCurrentDiff">-</td>
+      </tr>
+      <tr>
+        <td>Original Proposed</td>
+        <td>26.44</td>
+        <td id="timelineOriginalTax">-</td>
+        <td id="timelineOriginalDiff">-</td>
+      </tr>
+      <tr>
+        <td>First Revised Proposed</td>
+        <td>26.02</td>
+        <td id="timelineFirstRevisedTax">-</td>
+        <td id="timelineFirstRevisedDiff">-</td>
+      </tr>
+      <tr>
+        <td>Current Proposed</td>
+        <td>25.66</td>
+        <td id="timelineCurrentProposedTax">-</td>
+        <td id="timelineCurrentProposedDiff">-</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="font-size:13px;">
+    Current real estate taxes are estimated using the 2024 assessed value and the current real estate mill rate.
+    Proposed taxes are estimated using the 2025 assessed value and the proposed mill rate. Motor vehicle estimates use the entered motor vehicle assessment.
+  </p>
+</div>
+
 <div class="total-box">
   <h3>Combined Totals</h3>
 
@@ -243,36 +297,6 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
   <p><strong>Monthly Change:</strong> <span id="monthlyChange">-</span></p>
 </div>
 
-<div class="section comparison-box">
-  <h3>Proposed Mill Rate Timeline Comparison</h3>
-  <p style="font-size:13px;">This section compares the estimated tax impact of the original proposed mill rate, the first revised proposed mill rate, and the current proposed mill rate after the failed referendum.</p>
-
-  <table class="comparison-table">
-    <tr>
-      <th>Scenario</th>
-      <th>Mill Rate</th>
-      <th>Estimated Annual Tax</th>
-    </tr>
-    <tr>
-      <td>Original Proposal</td>
-      <td>26.44</td>
-      <td><span id="timelineOriginal">-</span></td>
-    </tr>
-    <tr>
-      <td>First Revision Before First Referendum</td>
-      <td>26.02</td>
-      <td><span id="timelineFirstRevision">-</span></td>
-    </tr>
-    <tr>
-      <td>Current Proposal After Failed Referendum</td>
-      <td>25.66</td>
-      <td><span id="timelineCurrent">-</span></td>
-    </tr>
-  </table>
-
-  <p><strong>Difference from Original Proposal:</strong> <span id="diffOriginal">-</span></p>
-  <p><strong>Difference from First Revision:</strong> <span id="diffFirstRevision">-</span></p>
-</div>
 <button type="button" onclick="printSummary()" style="margin-top:15px;">Print Summary</button>
 <div style="margin-top:20px;text-align:center;font-size:14px;">
   <p><strong>Page Views</strong></p>
@@ -307,18 +331,13 @@ function getVal(id){
 
 function setValue(id, value, isPercent=false){
   const el = document.getElementById(id);
+  if(!el){ return; }
 
   if(isPercent){
     el.innerText = value.toFixed(2) + "%";
-    if(value < 0){
-      el.classList.add('negative');
-    } else {
-      el.classList.remove('negative');
-    }
-    return;
+  } else {
+    el.innerText = money(value);
   }
-
-  el.innerText = money(value);
 
   if(value < 0){
     el.classList.add('negative');
@@ -402,6 +421,7 @@ function calc(){
   setValue('timelineCurrentProposedDiff', currentProposalTax - currentCombinedTax);
 
 
+
   document.getElementById('oldTotal').innerText = money(oldTotal);
   document.getElementById('newTotal').innerText = money(newTotal);
   setValue('changeTotal', change);
@@ -447,7 +467,6 @@ function printSummary() {
   const timelineCurrent = document.getElementById('timelineCurrent').innerText;
   const diffOriginal = document.getElementById('diffOriginal').innerText;
   const diffFirstRevision = document.getElementById('diffFirstRevision').innerText;
-
 
   const timelineCurrentTax = document.getElementById('timelineCurrentTax').innerText;
   const timelineCurrentDiff = document.getElementById('timelineCurrentDiff').innerText;

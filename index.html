@@ -108,6 +108,12 @@ button {
   margin: 8px 0;
 }
 
+
+.negative {
+  color: red;
+  font-weight: bold;
+}
+
 .total-box {
   border: 2px solid #bbb;
   padding: 15px;
@@ -115,6 +121,29 @@ button {
   margin-top: 20px;
   border-radius: 6px;
 }
+
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+}
+
+.comparison-table th,
+.comparison-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+.comparison-table th {
+  background: #eee;
+}
+
+.comparison-box {
+  background: #f6f6f6;
+}
+
 </style>
 </head>
 
@@ -141,7 +170,7 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
 
 <div class="section">
 <h3>Real Estate</h3>
-<p>Current: 38.59 | Proposed: 26.02</p>
+<p>Current: 38.59 | Current Current Proposed: 25.66</p>
 
 <label>2024 Assessed Value</label>
 <input type="number" id="realOld">
@@ -152,7 +181,7 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
 
 <div class="section">
 <h3>Motor Vehicles</h3>
-<p>Current: 32.46 | Proposed: 26.02</p>
+<p>Current: 32.46 | Current Current Proposed: 25.66</p>
 
 <input type="number" id="mv1" placeholder="Vehicle 1">
 <input type="number" id="mv2" placeholder="Vehicle 2">
@@ -200,6 +229,56 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
   </div>
 </div>
 
+
+<div class="section">
+  <h3>Proposed Mill Rate Timeline Comparison</h3>
+  <p class="note">
+    This section shows the current estimated tax and compares it to the proposed mill rate changes discussed during the budget process.
+  </p>
+
+  <table class="comparison-table">
+    <thead>
+      <tr>
+        <th>Scenario</th>
+        <th>Mill Rate</th>
+        <th>Estimated Annual Tax</th>
+        <th>Difference From Current</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Current</strong></td>
+        <td>Real Estate: 38.59<br>Motor Vehicle: 32.46</td>
+        <td id="timelineCurrentTax">-</td>
+        <td id="timelineCurrentDiff">-</td>
+      </tr>
+      <tr>
+        <td>Original Proposed</td>
+        <td>26.44</td>
+        <td id="timelineOriginalTax">-</td>
+        <td id="timelineOriginalDiff">-</td>
+      </tr>
+      <tr>
+        <td>First Revised Proposed</td>
+        <td>26.02</td>
+        <td id="timelineFirstRevisedTax">-</td>
+        <td id="timelineFirstRevisedDiff">-</td>
+      </tr>
+      <tr>
+        <td>Current Proposed</td>
+        <td>25.66</td>
+        <td id="timelineCurrentProposedTax">-</td>
+        <td id="timelineCurrentProposedDiff">-</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="note">
+    Current real estate taxes are estimated using the 2024 assessed value and the current real estate mill rate.
+    Proposed taxes are estimated using the 2025 assessed value and the proposed mill rate. Motor vehicle estimates use the entered motor vehicle assessment.
+  </p>
+</div>
+
 <div class="total-box">
   <h3>Combined Totals</h3>
 
@@ -209,6 +288,37 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
   <p><strong>Percent Change:</strong> <span id="percentChange">-</span></p>
   <p><strong>Monthly Change:</strong> <span id="monthlyChange">-</span></p>
 </div>
+
+<div class="section comparison-box">
+  <h3>Proposed Mill Rate Timeline Comparison</h3>
+  <p style="font-size:13px;">This section compares the estimated tax impact of the original proposed mill rate, the first revised proposed mill rate, and the current proposed mill rate after the failed referendum.</p>
+
+  <table class="comparison-table">
+    <tr>
+      <th>Scenario</th>
+      <th>Mill Rate</th>
+      <th>Estimated Annual Tax</th>
+    </tr>
+    <tr>
+      <td>Original Proposal</td>
+      <td>26.44</td>
+      <td><span id="timelineOriginal">-</span></td>
+    </tr>
+    <tr>
+      <td>First Revision Before First Referendum</td>
+      <td>26.02</td>
+      <td><span id="timelineFirstRevision">-</span></td>
+    </tr>
+    <tr>
+      <td>Current Proposal After Failed Referendum</td>
+      <td>25.66</td>
+      <td><span id="timelineCurrent">-</span></td>
+    </tr>
+  </table>
+
+  <p><strong>Difference from Original Proposal:</strong> <span id="diffOriginal">-</span></p>
+  <p><strong>Difference from First Revision:</strong> <span id="diffFirstRevision">-</span></p>
+</div>
 <button type="button" onclick="printSummary()" style="margin-top:15px;">Print Summary</button>
 <div style="margin-top:20px;text-align:center;font-size:14px;">
   <p><strong>Page Views</strong></p>
@@ -217,7 +327,7 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
 <img src="https://hitwebcounter.com/counter/counter.php?page=21488529&style=0025&nbdigits=5&type=page&initCount=1050" title="MS Word" Alt="MS Word"   border="0" /></>               
 
 <div class="disclaimer">
-<strong>Important:</strong> This calculator is provided for reference purposes only. Estimated taxes are based solely on assessed values and mill rates and do not account for any exemptions, credits, abatements, or other adjustments that may apply to your property. Actual tax bills may vary. The proposed mill rates are subject to final adoption.
+<strong>Important:</strong> This calculator is provided for reference purposes only. Estimated taxes are based solely on assessed values and mill rates and do not account for any exemptions, credits, abatements, or other adjustments that may apply to your property. Actual tax bills may vary. The proposed mill rates are subject to final adoption. The timeline comparison is informational and is based only on the values entered into this calculator. The original proposed mill rate was 26.44, then adjusted to 26.02 before the first referendum due to unexpected state revenue, and is now shown as 25.66 after the failed referendum and subsequent budget adjustments.
 </div>
 
 </div>
@@ -240,6 +350,29 @@ function getVal(id){
   return isNaN(v) ? 0 : v;
 }
 
+
+function setValue(id, value, isPercent=false){
+  const el = document.getElementById(id);
+
+  if(isPercent){
+    el.innerText = value.toFixed(2) + "%";
+    if(value < 0){
+      el.classList.add('negative');
+    } else {
+      el.classList.remove('negative');
+    }
+    return;
+  }
+
+  el.innerText = money(value);
+
+  if(value < 0){
+    el.classList.add('negative');
+  } else {
+    el.classList.remove('negative');
+  }
+}
+
 function calc(){
 
   let realOld = getVal('realOld');
@@ -258,10 +391,10 @@ function calc(){
   let sdOn = document.getElementById('sdToggle').checked;
 
   let realOldAnnual = (realOld/1000) * 38.59;
-  let realNewAnnual = (realNew/1000) * 26.02;
+  let realNewAnnual = (realNew/1000) * 25.66;
 
   let mvOldAnnual = (mvTotal/1000) * 32.46;
-  let mvNewAnnual = (mvTotal/1000) * 26.02;
+  let mvNewAnnual = (mvTotal/1000) * 25.66;
 
   let sdOldAnnual = 0;
   let sdNewAnnual = 0;
@@ -273,16 +406,16 @@ function calc(){
 
   document.getElementById('realOldAnnual').innerText = money(realOldAnnual);
   document.getElementById('realNewAnnual').innerText = money(realNewAnnual);
-  document.getElementById('realChangeAnnual').innerText = money(realNewAnnual - realOldAnnual);
+  setValue('realChangeAnnual', realNewAnnual - realOldAnnual);
 
   document.getElementById('mvOldAnnual').innerText = money(mvOldAnnual);
   document.getElementById('mvNewAnnual').innerText = money(mvNewAnnual);
-  document.getElementById('mvChangeAnnual').innerText = money(mvNewAnnual - mvOldAnnual);
+  setValue('mvChangeAnnual', mvNewAnnual - mvOldAnnual);
 
   if(sdOn){
     document.getElementById('sdOldAnnual').innerText = money(sdOldAnnual);
     document.getElementById('sdNewAnnual').innerText = money(sdNewAnnual);
-    document.getElementById('sdChangeAnnual').innerText = money(sdNewAnnual - sdOldAnnual);
+    setValue('sdChangeAnnual', sdNewAnnual - sdOldAnnual);
   } else {
     document.getElementById('sdOldAnnual').innerText = "-";
     document.getElementById('sdNewAnnual').innerText = "-";
@@ -294,11 +427,44 @@ function calc(){
   let change = newTotal - oldTotal;
   let percent = (oldTotal > 0) ? ((change / oldTotal) * 100) : 0;
 
+  let currentRealTax = (realOld/1000) * 38.59;
+  let currentMvTax = (mvTotal/1000) * 32.46;
+  let currentCombinedTax = currentRealTax + currentMvTax;
+
+  let originalProposalTax = ((realNew + mvTotal)/1000) * 26.44;
+  let firstRevisedTax = ((realNew + mvTotal)/1000) * 26.02;
+  let currentProposalTax = ((realNew + mvTotal)/1000) * 25.66;
+
+  setValue('timelineCurrentTax', currentCombinedTax);
+  setValue('timelineCurrentDiff', 0);
+
+  setValue('timelineOriginalTax', originalProposalTax);
+  setValue('timelineOriginalDiff', originalProposalTax - currentCombinedTax);
+
+  setValue('timelineFirstRevisedTax', firstRevisedTax);
+  setValue('timelineFirstRevisedDiff', firstRevisedTax - currentCombinedTax);
+
+  setValue('timelineCurrentProposedTax', currentProposalTax);
+  setValue('timelineCurrentProposedDiff', currentProposalTax - currentCombinedTax);
+
+
   document.getElementById('oldTotal').innerText = money(oldTotal);
   document.getElementById('newTotal').innerText = money(newTotal);
-  document.getElementById('changeTotal').innerText = money(change);
-  document.getElementById('monthlyChange').innerText = money(change / 12);
-  document.getElementById('percentChange').innerText = percent.toFixed(2) + "%";
+  setValue('changeTotal', change);
+  setValue('monthlyChange', change / 12);
+  setValue('percentChange', percent, true);
+
+  let sdRateCurrentProposal = sdOn ? 2.06 : 0;
+
+  let timelineOriginal = ((realNew + mvTotal) / 1000) * (26.44 + sdRateCurrentProposal);
+  let timelineFirstRevision = ((realNew + mvTotal) / 1000) * (26.02 + sdRateCurrentProposal);
+  let timelineCurrent = ((realNew + mvTotal) / 1000) * (25.66 + sdRateCurrentProposal);
+
+  document.getElementById('timelineOriginal').innerText = money(timelineOriginal);
+  document.getElementById('timelineFirstRevision').innerText = money(timelineFirstRevision);
+  document.getElementById('timelineCurrent').innerText = money(timelineCurrent);
+  document.getElementById('diffOriginal').innerText = money(timelineCurrent - timelineOriginal);
+  document.getElementById('diffFirstRevision').innerText = money(timelineCurrent - timelineFirstRevision);
 }
 
 function printSummary() {
@@ -322,6 +488,22 @@ function printSummary() {
   const percentChange = document.getElementById('percentChange').innerText;
   const monthlyChange = document.getElementById('monthlyChange').innerText;
 
+  const timelineOriginal = document.getElementById('timelineOriginal').innerText;
+  const timelineFirstRevision = document.getElementById('timelineFirstRevision').innerText;
+  const timelineCurrent = document.getElementById('timelineCurrent').innerText;
+  const diffOriginal = document.getElementById('diffOriginal').innerText;
+  const diffFirstRevision = document.getElementById('diffFirstRevision').innerText;
+
+
+  const timelineCurrentTax = document.getElementById('timelineCurrentTax').innerText;
+  const timelineCurrentDiff = document.getElementById('timelineCurrentDiff').innerText;
+  const timelineOriginalTax = document.getElementById('timelineOriginalTax').innerText;
+  const timelineOriginalDiff = document.getElementById('timelineOriginalDiff').innerText;
+  const timelineFirstRevisedTax = document.getElementById('timelineFirstRevisedTax').innerText;
+  const timelineFirstRevisedDiff = document.getElementById('timelineFirstRevisedDiff').innerText;
+  const timelineCurrentProposedTax = document.getElementById('timelineCurrentProposedTax').innerText;
+  const timelineCurrentProposedDiff = document.getElementById('timelineCurrentProposedDiff').innerText;
+
   const now = new Date().toLocaleString();
 
   const ratesHtml = `
@@ -329,9 +511,9 @@ function printSummary() {
       <h3>Mill Rates Used</h3>
       <table>
         <tr><td>Real Estate (Current)</td><td>38.59</td></tr>
-        <tr><td>Real Estate (Proposed)</td><td>26.02</td></tr>
+        <tr><td>Real Estate (Current Proposed)</td><td>25.66</td></tr>
         <tr><td>Motor Vehicle (Current)</td><td>32.46</td></tr>
-        <tr><td>Motor Vehicle (Proposed)</td><td>26.02</td></tr>
+        <tr><td>Motor Vehicle (Current Proposed)</td><td>25.66</td></tr>
         ${sdOn ? `
           <tr><td>Service District (Current)</td><td>3.05</td></tr>
           <tr><td>Service District (Proposed)</td><td>2.06</td></tr>
@@ -430,7 +612,30 @@ function printSummary() {
         .page-wrap {
           max-width: 100%;
         }
-      </style>
+      
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+}
+
+.comparison-table th,
+.comparison-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+.comparison-table th {
+  background: #eee;
+}
+
+.comparison-box {
+  background: #f6f6f6;
+}
+
+</style>
     </head>
     <body>
       <div class="page-wrap">
@@ -438,6 +643,18 @@ function printSummary() {
         <div class="subhead">Generated: ${now}</div>
 
         ${ratesHtml}
+
+
+
+        <div class="summary-section">
+          <h3>Proposed Mill Rate Timeline Comparison</h3>
+          <table>
+            <tr><td>Current - Real Estate 38.59 / Motor Vehicle 32.46</td><td>${timelineCurrentTax}</td><td>${timelineCurrentDiff}</td></tr>
+            <tr><td>Original Proposed - 26.44</td><td>${timelineOriginalTax}</td><td>${timelineOriginalDiff}</td></tr>
+            <tr><td>First Revised Proposed - 26.02</td><td>${timelineFirstRevisedTax}</td><td>${timelineFirstRevisedDiff}</td></tr>
+            <tr><td>Current Proposed - 25.66</td><td>${timelineCurrentProposedTax}</td><td>${timelineCurrentProposedDiff}</td></tr>
+          </table>
+        </div>
 
         <div class="summary-section">
           <h3>Real Estate</h3>
@@ -460,6 +677,19 @@ function printSummary() {
 
         ${serviceDistrictHtml}
 
+
+
+        <div class="summary-section">
+          <h3>Proposed Mill Rate Timeline Comparison</h3>
+          <table>
+            <tr><td>Original Proposal at 26.44</td><td>${timelineOriginal}</td></tr>
+            <tr><td>First Revision at 26.02</td><td>${timelineFirstRevision}</td></tr>
+            <tr><td>Current Proposal at 25.66</td><td>${timelineCurrent}</td></tr>
+            <tr><td>Difference from Original Proposal</td><td>${diffOriginal}</td></tr>
+            <tr><td>Difference from First Revision</td><td>${diffFirstRevision}</td></tr>
+          </table>
+        </div>
+
         <div class="totals">
           <h3>Combined Totals</h3>
           <table>
@@ -472,7 +702,7 @@ function printSummary() {
         </div>
 
         <div class="disclaimer">
-          <strong>Important:</strong> This calculator is provided for reference purposes only. Estimated taxes are based solely on assessed values and mill rates and do not account for exemptions, credits, abatements, or other adjustments that may apply to your property. Actual tax bills may vary. The proposed mill rates are subject to final adoption.
+          <strong>Important:</strong> This calculator is provided for reference purposes only. Estimated taxes are based solely on assessed values and mill rates and do not account for exemptions, credits, abatements, or other adjustments that may apply to your property. Actual tax bills may vary. The proposed mill rates are subject to final adoption. The timeline comparison is informational and is based only on the values entered into this calculator. The original proposed mill rate was 26.44, then adjusted to 26.02 before the first referendum due to unexpected state revenue, and is now shown as 25.66 after the failed referendum and subsequent budget adjustments.
         </div>
       </div>
     </body>
@@ -491,4 +721,3 @@ function printSummary() {
 
 </body>
 </html>
-

@@ -5,6 +5,7 @@
 <title>Stafford Connecticut Mill Rate Comparison Calculator</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+
 <style>
 body {
   font-family: Arial, sans-serif;
@@ -12,7 +13,7 @@ body {
   margin: 20px auto;
   padding: 20px;
   line-height: 1.4;
-  
+}
 
 .container {
   border: 1px solid #ccc;
@@ -32,6 +33,7 @@ input[type="number"] {
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
+  box-sizing: border-box;
 }
 
 button {
@@ -67,12 +69,6 @@ button {
   margin: 8px 0;
 }
 
-
-.negative {
-  color: red;
-  font-weight: bold;
-}
-
 .total-box {
   border: 2px solid #bbb;
   padding: 15px;
@@ -81,11 +77,15 @@ button {
   border-radius: 6px;
 }
 
+.negative {
+  color: red;
+  font-weight: bold;
+}
 
 .comparison-table {
   width: 100%;
   border-collapse: collapse;
-  margin: 12px 0;
+  margin-top: 10px;
 }
 
 .comparison-table th,
@@ -93,6 +93,7 @@ button {
   border: 1px solid #ccc;
   padding: 8px;
   text-align: left;
+  vertical-align: top;
 }
 
 .comparison-table th {
@@ -102,7 +103,6 @@ button {
 .comparison-box {
   background: #f6f6f6;
 }
-
 
 @media print {
   body {
@@ -145,8 +145,8 @@ button {
     font-size: 11px;
   }
 }
-
 </style>
+
 </head>
 
 <body>
@@ -158,7 +158,6 @@ button {
 <p style="margin-top:-8px;font-size:14px;color:#555;">
 Updated after the first failed referendum on 5/5/2026 where 579 voted yes and 1,026 voted no.
 </p>
-
 <div class="links">
 <p>
 <strong>Real Estate:</strong><br>
@@ -176,7 +175,7 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
 
 <div class="section">
 <h3>Real Estate</h3>
-<p>Current: 38.59 | Current Current Proposed: 25.66</p>
+<p>Current: 38.59 | Current Proposed: 25.66</p>
 
 <label>2024 Assessed Value</label>
 <input type="number" id="realOld">
@@ -187,7 +186,7 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
 
 <div class="section">
 <h3>Motor Vehicles</h3>
-<p>Current: 32.46 | Current Current Proposed: 25.66</p>
+<p>Current: 32.46 | Current Proposed: 25.66</p>
 
 <input type="number" id="mv1" placeholder="Vehicle 1">
 <input type="number" id="mv2" placeholder="Vehicle 2">
@@ -234,6 +233,7 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
     <p><strong>Service District Annual Change:</strong> <span id="sdChangeAnnual">-</span></p>
   </div>
 </div>
+
 
 
 
@@ -304,7 +304,7 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
   <p><strong>Page Views</strong></p>
   <!-- hitwebcounter Code START -->
 
-<img src="https://hitwebcounter.com/counter/counter.php?page=21488529&style=0025&nbdigits=5&type=page&initCount=1050" title="MS Word" Alt="MS Word"   border="0" /></>               
+<img src="https://hitwebcounter.com/counter/counter.php?page=21488529&style=0025&nbdigits=5&type=page&initCount=1050" title="MS Word" Alt="MS Word"   border="0" />
 
 <div class="disclaimer">
 <strong>Important:</strong> This calculator is provided for reference purposes only. Estimated taxes are based solely on assessed values and mill rates and do not account for any exemptions, credits, abatements, or other adjustments that may apply to your property. Actual tax bills may vary. The proposed mill rates are subject to final adoption. The timeline comparison is informational and is based only on the values entered into this calculator. The original proposed mill rate was 26.44, then adjusted to 26.02 before the first referendum due to unexpected state revenue, and is now shown as 25.66 after the failed referendum and subsequent budget adjustments.
@@ -312,34 +312,32 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
 
 </div>
 
+
 <script>
 function money(x){
   return new Intl.NumberFormat('en-US', {
     style:'currency',
     currency:'USD'
-  }).format(x);
+  }).format(Number(x) || 0);
 }
 
-document.getElementById('sdToggle').onchange = function(){
-  document.getElementById('sdBox').classList.toggle('hidden');
-  document.getElementById('sdResults').classList.toggle('hidden');
-};
-
 function getVal(id){
-  let v = parseFloat(document.getElementById(id).value);
+  const el = document.getElementById(id);
+  if(!el){ return 0; }
+  const v = parseFloat(el.value);
   return isNaN(v) ? 0 : v;
 }
 
+function setText(id, text){
+  const el = document.getElementById(id);
+  if(el){ el.innerText = text; }
+}
 
-function setValue(id, value, isPercent=false){
+function setMoney(id, value){
   const el = document.getElementById(id);
   if(!el){ return; }
 
-  if(isPercent){
-    el.innerText = value.toFixed(2) + "%";
-  } else {
-    el.innerText = money(value);
-  }
+  el.innerText = money(value);
 
   if(value < 0){
     el.classList.add('negative');
@@ -348,207 +346,113 @@ function setValue(id, value, isPercent=false){
   }
 }
 
+function setPercent(id, value){
+  const el = document.getElementById(id);
+  if(!el){ return; }
+
+  el.innerText = value.toFixed(2) + "%";
+
+  if(value < 0){
+    el.classList.add('negative');
+  } else {
+    el.classList.remove('negative');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  const sdToggle = document.getElementById('sdToggle');
+
+  if(sdToggle){
+    sdToggle.addEventListener('change', function(){
+      const sdBox = document.getElementById('sdBox');
+      const sdResults = document.getElementById('sdResults');
+
+      if(sdBox){ sdBox.classList.toggle('hidden', !sdToggle.checked); }
+      if(sdResults){ sdResults.classList.toggle('hidden', !sdToggle.checked); }
+    });
+  }
+});
+
 function calc(){
+  const realOld = getVal('realOld');
+  const realNew = getVal('realNew');
 
-  let realOld = getVal('realOld');
-  let realNew = getVal('realNew');
-
-  let mvTotal = getVal('mv1') + getVal('mv2') + getVal('mv3') + getVal('mv4');
-  document.getElementById('mvTotal').innerText = money(mvTotal);
+  const mvTotal = getVal('mv1') + getVal('mv2') + getVal('mv3') + getVal('mv4');
+  setMoney('mvTotal', mvTotal);
 
   if(!realOld || !realNew){
-    document.getElementById('error').innerText = "Enter real estate values.";
+    setText('error', 'Enter real estate values.');
     return;
   }
 
-  document.getElementById('error').innerText = "";
+  setText('error', '');
 
-  let sdOn = document.getElementById('sdToggle').checked;
+  const sdOn = document.getElementById('sdToggle') ? document.getElementById('sdToggle').checked : false;
 
-  let realOldAnnual = (realOld/1000) * 38.59;
-  let realNewAnnual = (realNew/1000) * 25.66;
+  const realOldAnnual = (realOld / 1000) * 38.59;
+  const realNewAnnual = (realNew / 1000) * 25.66;
 
-  let mvOldAnnual = (mvTotal/1000) * 32.46;
-  let mvNewAnnual = (mvTotal/1000) * 25.66;
+  const mvOldAnnual = (mvTotal / 1000) * 32.46;
+  const mvNewAnnual = (mvTotal / 1000) * 25.66;
 
   let sdOldAnnual = 0;
   let sdNewAnnual = 0;
 
   if(sdOn){
-    sdOldAnnual = (realOld/1000) * 3.05 + (mvTotal/1000) * 3.05;
-    sdNewAnnual = (realNew/1000) * 2.06 + (mvTotal/1000) * 2.06;
+    sdOldAnnual = ((realOld + mvTotal) / 1000) * 3.05;
+    sdNewAnnual = ((realNew + mvTotal) / 1000) * 2.06;
   }
 
-  document.getElementById('realOldAnnual').innerText = money(realOldAnnual);
-  document.getElementById('realNewAnnual').innerText = money(realNewAnnual);
-  setValue('realChangeAnnual', realNewAnnual - realOldAnnual);
+  setMoney('realOldAnnual', realOldAnnual);
+  setMoney('realNewAnnual', realNewAnnual);
+  setMoney('realChangeAnnual', realNewAnnual - realOldAnnual);
 
-  document.getElementById('mvOldAnnual').innerText = money(mvOldAnnual);
-  document.getElementById('mvNewAnnual').innerText = money(mvNewAnnual);
-  setValue('mvChangeAnnual', mvNewAnnual - mvOldAnnual);
+  setMoney('mvOldAnnual', mvOldAnnual);
+  setMoney('mvNewAnnual', mvNewAnnual);
+  setMoney('mvChangeAnnual', mvNewAnnual - mvOldAnnual);
 
   if(sdOn){
-    document.getElementById('sdOldAnnual').innerText = money(sdOldAnnual);
-    document.getElementById('sdNewAnnual').innerText = money(sdNewAnnual);
-    setValue('sdChangeAnnual', sdNewAnnual - sdOldAnnual);
+    setMoney('sdOldAnnual', sdOldAnnual);
+    setMoney('sdNewAnnual', sdNewAnnual);
+    setMoney('sdChangeAnnual', sdNewAnnual - sdOldAnnual);
   } else {
-    document.getElementById('sdOldAnnual').innerText = "-";
-    document.getElementById('sdNewAnnual').innerText = "-";
-    document.getElementById('sdChangeAnnual').innerText = "-";
+    setText('sdOldAnnual', '-');
+    setText('sdNewAnnual', '-');
+    setText('sdChangeAnnual', '-');
   }
 
-  let oldTotal = realOldAnnual + mvOldAnnual + sdOldAnnual;
-  let newTotal = realNewAnnual + mvNewAnnual + sdNewAnnual;
-  let change = newTotal - oldTotal;
-  let percent = (oldTotal > 0) ? ((change / oldTotal) * 100) : 0;
+  const oldTotal = realOldAnnual + mvOldAnnual + sdOldAnnual;
+  const newTotal = realNewAnnual + mvNewAnnual + sdNewAnnual;
+  const change = newTotal - oldTotal;
+  const percent = oldTotal > 0 ? (change / oldTotal) * 100 : 0;
 
-  let currentRealTax = (realOld/1000) * 38.59;
-  let currentMvTax = (mvTotal/1000) * 32.46;
-  let currentCombinedTax = currentRealTax + currentMvTax;
+  setMoney('oldTotal', oldTotal);
+  setMoney('newTotal', newTotal);
+  setMoney('changeTotal', change);
+  setPercent('percentChange', percent);
+  setMoney('monthlyChange', change / 12);
 
-  let originalProposalTax = ((realNew + mvTotal)/1000) * 26.44;
-  let firstRevisedTax = ((realNew + mvTotal)/1000) * 26.02;
-  let currentProposalTax = ((realNew + mvTotal)/1000) * 25.66;
+  const currentCombinedTax = realOldAnnual + mvOldAnnual;
+  const originalProposalTax = ((realNew + mvTotal) / 1000) * 26.44;
+  const firstRevisedTax = ((realNew + mvTotal) / 1000) * 26.02;
+  const currentProposalTax = ((realNew + mvTotal) / 1000) * 25.66;
 
-  setValue('timelineCurrentTax', currentCombinedTax);
-  setValue('timelineCurrentDiff', 0);
+  setMoney('timelineCurrentTax', currentCombinedTax);
+  setMoney('timelineCurrentDiff', 0);
 
-  setValue('timelineOriginalTax', originalProposalTax);
-  setValue('timelineOriginalDiff', originalProposalTax - currentCombinedTax);
+  setMoney('timelineOriginalTax', originalProposalTax);
+  setMoney('timelineOriginalDiff', originalProposalTax - currentCombinedTax);
 
-  setValue('timelineFirstRevisedTax', firstRevisedTax);
-  setValue('timelineFirstRevisedDiff', firstRevisedTax - currentCombinedTax);
+  setMoney('timelineFirstRevisedTax', firstRevisedTax);
+  setMoney('timelineFirstRevisedDiff', firstRevisedTax - currentCombinedTax);
 
-  setValue('timelineCurrentProposedTax', currentProposalTax);
-  setValue('timelineCurrentProposedDiff', currentProposalTax - currentCombinedTax);
-
-
-
-  document.getElementById('oldTotal').innerText = money(oldTotal);
-  document.getElementById('newTotal').innerText = money(newTotal);
-  setValue('changeTotal', change);
-  setValue('monthlyChange', change / 12);
-  setValue('percentChange', percent, true);
-
-  let sdRateCurrentProposal = sdOn ? 2.06 : 0;
-
-  let timelineOriginal = ((realNew + mvTotal) / 1000) * (26.44 + sdRateCurrentProposal);
-  let timelineFirstRevision = ((realNew + mvTotal) / 1000) * (26.02 + sdRateCurrentProposal);
-  let timelineCurrent = ((realNew + mvTotal) / 1000) * (25.66 + sdRateCurrentProposal);
-
-  document.getElementById('timelineOriginal').innerText = money(timelineOriginal);
-  document.getElementById('timelineFirstRevision').innerText = money(timelineFirstRevision);
-  document.getElementById('timelineCurrent').innerText = money(timelineCurrent);
-  document.getElementById('diffOriginal').innerText = money(timelineCurrent - timelineOriginal);
-  document.getElementById('diffFirstRevision').innerText = money(timelineCurrent - timelineFirstRevision);
+  setMoney('timelineCurrentProposedTax', currentProposalTax);
+  setMoney('timelineCurrentProposedDiff', currentProposalTax - currentCombinedTax);
 }
 
-function printSummary() {
+function printSummary(){
   window.print();
 }
-
-.comparison-table th,
-.comparison-table td {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: left;
-}
-
-.comparison-table th {
-  background: #eee;
-}
-
-.comparison-box {
-  background: #f6f6f6;
-}
-
-</style>
-    </head>
-    <body>
-      <div class="page-wrap">
-        <h1>Stafford Connecticut Mill Rate Comparison Summary</h1>
-        <div class="subhead">Generated: ${now}</div>
-
-        ${ratesHtml}
-
-
-
-        <div class="summary-section">
-          <h3>Proposed Mill Rate Timeline Comparison</h3>
-          <table>
-            <tr><td>Current - Real Estate 38.59 / Motor Vehicle 32.46</td><td>${timelineCurrentTax}</td><td>${timelineCurrentDiff}</td></tr>
-            <tr><td>Original Proposed - 26.44</td><td>${timelineOriginalTax}</td><td>${timelineOriginalDiff}</td></tr>
-            <tr><td>First Revised Proposed - 26.02</td><td>${timelineFirstRevisedTax}</td><td>${timelineFirstRevisedDiff}</td></tr>
-            <tr><td>Current Proposed - 25.66</td><td>${timelineCurrentProposedTax}</td><td>${timelineCurrentProposedDiff}</td></tr>
-          </table>
-        </div>
-
-        <div class="summary-section">
-          <h3>Real Estate</h3>
-          <table>
-            <tr><td>Current Annual</td><td>${realOldAnnual}</td></tr>
-            <tr><td>Proposed Annual</td><td>${realNewAnnual}</td></tr>
-            <tr><td>Annual Change</td><td>${realChangeAnnual}</td></tr>
-          </table>
-        </div>
-
-        <div class="summary-section">
-          <h3>Motor Vehicle</h3>
-          <table>
-            <tr><td>Total Net Assessment Used</td><td>${mvTotal}</td></tr>
-            <tr><td>Current Annual</td><td>${mvOldAnnual}</td></tr>
-            <tr><td>Proposed Annual</td><td>${mvNewAnnual}</td></tr>
-            <tr><td>Annual Change</td><td>${mvChangeAnnual}</td></tr>
-          </table>
-        </div>
-
-        ${serviceDistrictHtml}
-
-
-
-        <div class="summary-section">
-          <h3>Proposed Mill Rate Timeline Comparison</h3>
-          <table>
-            <tr><td>Original Proposal at 26.44</td><td>${timelineOriginal}</td></tr>
-            <tr><td>First Revision at 26.02</td><td>${timelineFirstRevision}</td></tr>
-            <tr><td>Current Proposal at 25.66</td><td>${timelineCurrent}</td></tr>
-            <tr><td>Difference from Original Proposal</td><td>${diffOriginal}</td></tr>
-            <tr><td>Difference from First Revision</td><td>${diffFirstRevision}</td></tr>
-          </table>
-        </div>
-
-        <div class="totals">
-          <h3>Combined Totals</h3>
-          <table>
-            <tr><td>Current Annual</td><td>${oldTotal}</td></tr>
-            <tr><td>Proposed Annual</td><td>${newTotal}</td></tr>
-            <tr><td>Annual Change</td><td>${changeTotal}</td></tr>
-            <tr><td>Percent Change</td><td>${percentChange}</td></tr>
-            <tr><td>Monthly Change</td><td>${monthlyChange}</td></tr>
-          </table>
-        </div>
-
-        <div class="disclaimer">
-          <strong>Important:</strong> This calculator is provided for reference purposes only. Estimated taxes are based solely on assessed values and mill rates and do not account for exemptions, credits, abatements, or other adjustments that may apply to your property. Actual tax bills may vary. The proposed mill rates are subject to final adoption. The timeline comparison is informational and is based only on the values entered into this calculator. The original proposed mill rate was 26.44, then adjusted to 26.02 before the first referendum due to unexpected state revenue, and is now shown as 25.66 after the failed referendum and subsequent budget adjustments.
-        </div>
-      </div>
-    </body>
-    </html>
-  `);
-
-  printWindow.document.close();
-  printWindow.focus();
-
-  if (!printWindow || printWindow.closed || typeof printWindow.closed == 'undefined') {
-    window.print();
-    return;
-  }
-
-  setTimeout(function () {
-    printWindow.print();
-  }, 500);
-}
-
 </script>
 
 </body>

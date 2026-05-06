@@ -203,7 +203,9 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
 
 <div id="sdBox" class="hidden">
 <p>Current: 3.05 | Proposed: 2.06</p>
-<p style="font-size:13px;">Applies to both real estate and motor vehicle.</p>
+<p style="font-size:13px;">
+Current Service District tax applies to real estate only. The proposed Service District tax applies to both real estate and motor vehicles because the motor vehicle mill rate is moving below the state cap.
+</p>
 </div>
 </div>
 
@@ -285,7 +287,7 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
 
   <p style="font-size:13px;">
     Current real estate taxes are estimated using the 2024 assessed value and the current real estate mill rate.
-    Proposed taxes are estimated using the 2025 assessed value and the proposed mill rate. Motor vehicle estimates use the entered motor vehicle assessment.
+    Proposed taxes are estimated using the 2025 assessed value and the proposed mill rate. Motor vehicle estimates use the entered motor vehicle assessment. For the Service District, current motor vehicle Service District tax is treated as zero, while the proposed Service District rate applies to motor vehicles.
   </p>
 </div>
 
@@ -307,7 +309,7 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
 <img src="https://hitwebcounter.com/counter/counter.php?page=21488529&style=0025&nbdigits=5&type=page&initCount=1050" title="MS Word" Alt="MS Word"   border="0" />
 
 <div class="disclaimer">
-<strong>Important:</strong> This calculator is provided for reference purposes only. Estimated taxes are based solely on assessed values and mill rates and do not account for any exemptions, credits, abatements, or other adjustments that may apply to your property. Actual tax bills may vary. The proposed mill rates are subject to final adoption. The timeline comparison is informational and is based only on the values entered into this calculator. The original proposed mill rate was 26.44, then adjusted to 26.02 before the first referendum due to unexpected state revenue, and is now shown as 25.66 after the failed referendum and subsequent budget adjustments.
+<strong>Important:</strong> This calculator is provided for reference purposes only. Estimated taxes are based solely on assessed values and mill rates and do not account for any exemptions, credits, abatements, or other adjustments that may apply to your property. Actual tax bills may vary. The proposed mill rates are subject to final adoption. For Service District calculations, the current motor vehicle Service District tax is treated as zero. The timeline comparison is informational and is based only on the values entered into this calculator. The original proposed mill rate was 26.44, then adjusted to 26.02 before the first referendum due to unexpected state revenue, and is now shown as 25.66 after the failed referendum and subsequent budget adjustments.
 </div>
 
 </div>
@@ -399,7 +401,7 @@ function calc(){
   let sdNewAnnual = 0;
 
   if(sdOn){
-    sdOldAnnual = ((realOld + mvTotal) / 1000) * 3.05;
+    sdOldAnnual = (realOld / 1000) * 3.05;
     sdNewAnnual = ((realNew + mvTotal) / 1000) * 2.06;
   }
 

@@ -12,48 +12,7 @@ body {
   margin: 20px auto;
   padding: 20px;
   line-height: 1.4;
-  @media print {
-
-  body {
-    max-width: 100%;
-    margin: 0;
-    padding: 10px;
-  }
-
-  button {
-    display: none;
-  }
-
-  .links {
-    background: none;
-    border: none;
-    padding: 0;
-  }
-
-  .section {
-    page-break-inside: avoid;
-  }
-
-  .total-box {
-    border: 2px solid black;
-  }
-
-  input {
-    border: none;
-    padding: 0;
-    margin: 0;
-    font-weight: bold;
-  }
-
-  input::placeholder {
-    color: transparent;
-  }
-
-  .disclaimer {
-    font-size: 11px;
-  }
-
-}
+  
 
 .container {
   border: 1px solid #ccc;
@@ -142,6 +101,49 @@ button {
 
 .comparison-box {
   background: #f6f6f6;
+}
+
+
+@media print {
+  body {
+    max-width: 100%;
+    margin: 0;
+    padding: 10px;
+  }
+
+  button {
+    display: none !important;
+  }
+
+  .links {
+    background: none;
+    border: none;
+    padding: 0;
+  }
+
+  .section,
+  .total-box {
+    page-break-inside: avoid;
+  }
+
+  .total-box {
+    border: 2px solid black;
+  }
+
+  input {
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-weight: bold;
+  }
+
+  input::placeholder {
+    color: transparent;
+  }
+
+  .disclaimer {
+    font-size: 11px;
+  }
 }
 
 </style>
@@ -442,155 +444,7 @@ function calc(){
 }
 
 function printSummary() {
-  const realOldAnnual = document.getElementById('realOldAnnual').innerText;
-  const realNewAnnual = document.getElementById('realNewAnnual').innerText;
-  const realChangeAnnual = document.getElementById('realChangeAnnual').innerText;
-
-  const mvOldAnnual = document.getElementById('mvOldAnnual').innerText;
-  const mvNewAnnual = document.getElementById('mvNewAnnual').innerText;
-  const mvChangeAnnual = document.getElementById('mvChangeAnnual').innerText;
-  const mvTotal = document.getElementById('mvTotal').innerText;
-
-  const sdOn = document.getElementById('sdToggle').checked;
-  const sdOldAnnual = document.getElementById('sdOldAnnual').innerText;
-  const sdNewAnnual = document.getElementById('sdNewAnnual').innerText;
-  const sdChangeAnnual = document.getElementById('sdChangeAnnual').innerText;
-
-  const oldTotal = document.getElementById('oldTotal').innerText;
-  const newTotal = document.getElementById('newTotal').innerText;
-  const changeTotal = document.getElementById('changeTotal').innerText;
-  const percentChange = document.getElementById('percentChange').innerText;
-  const monthlyChange = document.getElementById('monthlyChange').innerText;
-
-  const timelineOriginal = document.getElementById('timelineOriginal').innerText;
-  const timelineFirstRevision = document.getElementById('timelineFirstRevision').innerText;
-  const timelineCurrent = document.getElementById('timelineCurrent').innerText;
-  const diffOriginal = document.getElementById('diffOriginal').innerText;
-  const diffFirstRevision = document.getElementById('diffFirstRevision').innerText;
-
-  const timelineCurrentTax = document.getElementById('timelineCurrentTax').innerText;
-  const timelineCurrentDiff = document.getElementById('timelineCurrentDiff').innerText;
-  const timelineOriginalTax = document.getElementById('timelineOriginalTax').innerText;
-  const timelineOriginalDiff = document.getElementById('timelineOriginalDiff').innerText;
-  const timelineFirstRevisedTax = document.getElementById('timelineFirstRevisedTax').innerText;
-  const timelineFirstRevisedDiff = document.getElementById('timelineFirstRevisedDiff').innerText;
-  const timelineCurrentProposedTax = document.getElementById('timelineCurrentProposedTax').innerText;
-  const timelineCurrentProposedDiff = document.getElementById('timelineCurrentProposedDiff').innerText;
-
-  const now = new Date().toLocaleString();
-
-  const ratesHtml = `
-    <div class="summary-section">
-      <h3>Mill Rates Used</h3>
-      <table>
-        <tr><td>Real Estate (Current)</td><td>38.59</td></tr>
-        <tr><td>Real Estate (Current Proposed)</td><td>25.66</td></tr>
-        <tr><td>Motor Vehicle (Current)</td><td>32.46</td></tr>
-        <tr><td>Motor Vehicle (Current Proposed)</td><td>25.66</td></tr>
-        ${sdOn ? `
-          <tr><td>Service District (Current)</td><td>3.05</td></tr>
-          <tr><td>Service District (Proposed)</td><td>2.06</td></tr>
-        ` : ''}
-      </table>
-    </div>
-  `;
-
-  const serviceDistrictHtml = sdOn ? `
-    <div class="summary-section">
-      <h3>Service District</h3>
-      <table>
-        <tr><td>Current Annual</td><td>${sdOldAnnual}</td></tr>
-        <tr><td>Proposed Annual</td><td>${sdNewAnnual}</td></tr>
-        <tr><td>Annual Change</td><td>${sdChangeAnnual}</td></tr>
-      </table>
-    </div>
-  ` : '';
-
-  const printWindow = window.open('', '_blank', 'width=1000,height=700');
-
-  if (!printWindow) {
-    alert('Pop-up blocked. Please allow pop-ups for this page and try again.');
-    return;
-  }
-
-  printWindow.document.write(`
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <title>Stafford Connecticut Mill Rate Comparison Summary</title>
-      <style>
-        @page {
-          size: letter landscape;
-          margin: 0.35in;
-        }
-
-        body {
-          font-family: Arial, sans-serif;
-          margin: 0;
-          color: #000;
-          font-size: 11px;
-          line-height: 1.2;
-        }
-
-        h1 {
-          font-size: 18px;
-          margin: 0 0 4px 0;
-        }
-
-        .subhead {
-          font-size: 10px;
-          margin-bottom: 8px;
-        }
-
-        .summary-section {
-          margin-bottom: 8px;
-        }
-
-        h3 {
-          font-size: 12px;
-          margin: 0 0 4px 0;
-          border-bottom: 1px solid #000;
-          padding-bottom: 2px;
-        }
-
-        table {
-          width: 100%;
-          border-collapse: collapse;
-          margin-bottom: 2px;
-        }
-
-        td {
-          padding: 3px 5px;
-          border: 1px solid #bbb;
-          font-size: 10px;
-        }
-
-        td:first-child {
-          font-weight: bold;
-          width: 72%;
-        }
-
-        .totals {
-          border: 2px solid #000;
-          padding: 6px;
-          margin-top: 6px;
-        }
-
-        .disclaimer {
-          margin-top: 8px;
-          font-size: 9px;
-        }
-
-        .page-wrap {
-          max-width: 100%;
-        }
-      
-
-.comparison-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 12px 0;
+  window.print();
 }
 
 .comparison-table th,

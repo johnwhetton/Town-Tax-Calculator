@@ -5,7 +5,6 @@
 <title>Stafford Connecticut Mill Rate Comparison Calculator</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-
 <style>
 body {
   font-family: Arial, sans-serif;
@@ -156,8 +155,9 @@ button {
 <h2>Stafford Connecticut Mill Rate Comparison Calculator</h2>
 
 <p style="margin-top:-8px;font-size:14px;color:#555;">
-Updated after the first failed referendum on 5/5/2026 where 579 voted yes and 1,026 voted no.
+Updated after the second budget referendum resulted in 813 yes and 1,103 no and was defeated. The current updated proposed mill rate is 25.59.
 </p>
+
 <div class="links">
 <p>
 <strong>Real Estate:</strong><br>
@@ -175,7 +175,7 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
 
 <div class="section">
 <h3>Real Estate</h3>
-<p>Current: 38.59 | Current Proposed: 25.66</p>
+<p>Current: 38.59 | Current Proposed: 25.59</p>
 
 <label>2024 Assessed Value</label>
 <input type="number" id="realOld">
@@ -186,7 +186,7 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
 
 <div class="section">
 <h3>Motor Vehicles</h3>
-<p>Current: 32.46 | Current Proposed: 25.66</p>
+<p>Current: 32.46 | Current Proposed: 25.59</p>
 
 <input type="number" id="mv1" placeholder="Vehicle 1">
 <input type="number" id="mv2" placeholder="Vehicle 2">
@@ -207,7 +207,7 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
 <p><strong>Motor Vehicle Service District:</strong> Current: 0.00 | Approved: 2.06</p>
 
 <p style="font-size:13px;">
-Current Service District tax applies only to real estate. Under the Approved Service District mill rate structure, the Service District tax also applies to motor vehicles because the motor vehicle mill rate is moving below the state cap.
+Current Service District tax applies only to real estate. Under the approved Service District mill rate structure, the Service District tax also applies to motor vehicles because the motor vehicle mill rate is moving below the state cap.
 </p>
 </div>
 </div>
@@ -250,16 +250,10 @@ Current Service District tax applies only to real estate. Under the Approved Ser
   </div>
 </div>
 
-
-
-
-
-
-
 <div class="section comparison-box">
   <h3>Proposed Mill Rate Timeline Comparison</h3>
   <p style="font-size:13px;">
-    This section compares the total estimated tax impact, including Service District taxes when selected, with the original proposed rate, the first revised proposed rate, and the current proposed rate.
+    This section compares the total estimated tax impact, including Service District taxes when selected, with the original proposed rate, the first revised proposed rate, the second referendum proposed rate, and the current updated proposed rate.
   </p>
 
   <table class="comparison-table">
@@ -285,14 +279,20 @@ Current Service District tax applies only to real estate. Under the Approved Ser
         <td id="timelineOriginalDiff">-</td>
       </tr>
       <tr>
-        <td>First Revised Proposed</td>
+        <td>First Revised Proposed<br><small>First referendum: 579 Yes, 1,026 No — Defeated</small></td>
         <td>26.02</td>
         <td id="timelineFirstRevisedTax">-</td>
         <td id="timelineFirstRevisedDiff">-</td>
       </tr>
       <tr>
-        <td>Current Proposed</td>
+        <td>Second Referendum Proposed<br><small>Second referendum: 813 Yes, 1,103 No — Defeated</small></td>
         <td>25.66</td>
+        <td id="timelineSecondReferendumTax">-</td>
+        <td id="timelineSecondReferendumDiff">-</td>
+      </tr>
+      <tr>
+        <td><strong>Current Updated Proposed</strong></td>
+        <td><strong>25.59</strong></td>
         <td id="timelineCurrentProposedTax">-</td>
         <td id="timelineCurrentProposedDiff">-</td>
       </tr>
@@ -316,18 +316,17 @@ Current Service District tax applies only to real estate. Under the Approved Ser
 </div>
 
 <button type="button" onclick="printSummary()" style="margin-top:15px;">Print Summary</button>
+
 <div style="margin-top:20px;text-align:center;font-size:14px;">
   <p><strong>Page Views</strong></p>
-  <!-- hitwebcounter Code START -->
-
-<img src="https://hitwebcounter.com/counter/counter.php?page=21488529&style=0025&nbdigits=5&type=page&initCount=1050" title="MS Word" Alt="MS Word"   border="0" />
+  <img src="https://hitwebcounter.com/counter/counter.php?page=21488529&style=0025&nbdigits=5&type=page&initCount=1050" title="MS Word" Alt="MS Word" border="0" />
+</div>
 
 <div class="disclaimer">
-<strong>Important:</strong> This calculator is provided for reference purposes only. Estimated taxes are based solely on assessed values and mill rates and do not account for any exemptions, credits, abatements, or other adjustments that may apply to your property. Actual tax bills may vary. The proposed mill rates are subject to final adoption. For Service District calculations, the current motor vehicle Service District tax is treated as zero. The timeline comparison is informational and is based only on the values entered into this calculator. The original proposed mill rate was 26.44, then adjusted to 26.02 before the first referendum due to unexpected state revenue, and is now shown as 25.66 after the failed referendum and subsequent budget adjustments.
+<strong>Important:</strong> This calculator is provided for reference purposes only. Estimated taxes are based solely on assessed values and mill rates and do not account for any exemptions, credits, abatements, or other adjustments that may apply to your property. Actual tax bills may vary. The proposed mill rates are subject to final adoption. For Service District calculations, the current motor vehicle Service District tax is treated as zero. The timeline comparison is informational and is based only on the values entered into this calculator. The original proposed mill rate was 26.44, then adjusted to 26.02 before the first referendum due to unexpected state revenue. After the first referendum failed, the proposed mill rate was adjusted to 25.66. The second referendum resulted in 813 yes and 1,103 no and was defeated. The current updated proposed mill rate shown in this calculator is 25.59.
 </div>
 
 </div>
-
 
 <script>
 function money(x){
@@ -406,10 +405,10 @@ function calc(){
   const sdOn = document.getElementById('sdToggle') ? document.getElementById('sdToggle').checked : false;
 
   const realOldAnnual = (realOld / 1000) * 38.59;
-  const realNewAnnual = (realNew / 1000) * 25.66;
+  const realNewAnnual = (realNew / 1000) * 25.59;
 
   const mvOldAnnual = (mvTotal / 1000) * 32.46;
-  const mvNewAnnual = (mvTotal / 1000) * 25.66;
+  const mvNewAnnual = (mvTotal / 1000) * 25.59;
 
   let sdRealOldAnnual = 0;
   let sdRealNewAnnual = 0;
@@ -475,13 +474,15 @@ function calc(){
   let currentCombinedTax = realOldAnnual + mvOldAnnual;
   let originalProposalTax = ((realNew + mvTotal) / 1000) * 26.44;
   let firstRevisedTax = ((realNew + mvTotal) / 1000) * 26.02;
-  let currentProposalTax = ((realNew + mvTotal) / 1000) * 25.66;
+  let secondReferendumTax = ((realNew + mvTotal) / 1000) * 25.66;
+  let currentProposalTax = ((realNew + mvTotal) / 1000) * 25.59;
 
   if(sdOn){
     currentCombinedTax += sdOldAnnual;
 
     originalProposalTax += ((realNew / 1000) * 2.06) + ((mvTotal / 1000) * 2.06);
     firstRevisedTax += ((realNew / 1000) * 2.06) + ((mvTotal / 1000) * 2.06);
+    secondReferendumTax += ((realNew / 1000) * 2.06) + ((mvTotal / 1000) * 2.06);
     currentProposalTax += ((realNew / 1000) * 2.06) + ((mvTotal / 1000) * 2.06);
   }
 
@@ -493,6 +494,9 @@ function calc(){
 
   setMoney('timelineFirstRevisedTax', firstRevisedTax);
   setMoney('timelineFirstRevisedDiff', firstRevisedTax - currentCombinedTax);
+
+  setMoney('timelineSecondReferendumTax', secondReferendumTax);
+  setMoney('timelineSecondReferendumDiff', secondReferendumTax - currentCombinedTax);
 
   setMoney('timelineCurrentProposedTax', currentProposalTax);
   setMoney('timelineCurrentProposedDiff', currentProposalTax - currentCombinedTax);

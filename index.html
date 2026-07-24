@@ -6,105 +6,366 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+:root {
+  --navy: #17324d;
+  --blue: #245a86;
+  --pale-blue: #eaf2f8;
+  --pale-gray: #f5f7f9;
+  --mid-gray: #667788;
+  --green: #1e6b47;
+  --pale-green: #e8f4ee;
+  --red: #a12622;
+  --pale-red: #fbeceb;
+  --rule: #ccd6df;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
+  margin: 0;
+  padding: 32px 18px;
+  color: #273642;
+  background: #eef3f7;
   font-family: Arial, sans-serif;
-  max-width: 950px;
-  margin: 20px auto;
-  padding: 20px;
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 .container {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 20px;
+  width: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
+.app-shell,
+.print-page {
+  background: white;
+  border: 1px solid #d9e2ea;
+  border-radius: 14px;
+  box-shadow: 0 12px 35px rgba(23, 50, 77, 0.08);
+}
+
+.app-shell {
+  padding: 34px;
+}
+
+.site-title {
+  margin: 0 0 8px;
+  color: var(--navy);
+  font-size: clamp(27px, 4vw, 38px);
+  line-height: 1.1;
+}
+
+.site-status {
+  margin: 0 0 22px;
+  color: var(--mid-gray);
+  font-size: 15px;
+}
+
+.entry-intro {
+  margin: 0 0 18px;
+  color: #445766;
+  font-size: 16px;
+}
+
+.links {
+  margin-bottom: 22px;
+  padding: 18px;
+  border: 1px solid #d6e3ed;
+  border-radius: 10px;
+  background: var(--pale-blue);
+}
+
+.links p {
+  margin: 0;
+}
+
+.links a {
+  color: #155a8a;
+  font-weight: bold;
+}
+
+.input-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
 }
 
 .section {
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  padding: 15px;
-  margin-bottom: 20px;
-  background: #fafafa;
+  margin-bottom: 18px;
+  padding: 20px;
+  border: 1px solid #d9e2ea;
+  border-radius: 10px;
+  background: #fbfcfd;
+}
+
+.section h3 {
+  margin: 0 0 6px;
+  color: var(--navy);
+  font-size: 20px;
+}
+
+.section p {
+  margin-top: 6px;
+}
+
+.district-section {
+  background: var(--pale-blue);
+}
+
+label {
+  display: block;
+  margin: 11px 0 5px;
+  color: var(--navy);
+  font-weight: bold;
 }
 
 input[type="number"] {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  box-sizing: border-box;
+  margin-bottom: 8px;
+  padding: 12px 13px;
+  border: 1px solid #aebdca;
+  border-radius: 7px;
+  background: white;
+  color: #273642;
+  font: inherit;
+}
+
+input[type="number"]:focus {
+  border-color: var(--blue);
+  outline: 3px solid rgba(36, 90, 134, 0.14);
 }
 
 button {
-  padding: 10px 16px;
+  padding: 11px 17px;
+  border: 1px solid transparent;
+  border-radius: 7px;
   cursor: pointer;
+  font: inherit;
+  font-weight: bold;
 }
 
-.hidden {
-  display: none;
+.primary-button {
+  color: white;
+  background: var(--blue);
 }
 
-.links {
-  background: #f8f8f8;
-  padding: 12px;
-  border-radius: 6px;
-  margin-bottom: 20px;
+.primary-button:hover {
+  background: #19486f;
 }
 
-.disclaimer {
-  margin-top: 20px;
-  padding: 12px;
-  background: #f8f8f8;
-  border-left: 4px solid #cc0000;
-  font-size: 13px;
+.secondary-button {
+  color: var(--navy);
+  border-color: #aebdca;
+  background: white;
+}
+
+.secondary-button:hover {
+  background: var(--pale-gray);
+}
+
+.tertiary-button {
+  color: #435766;
+  background: transparent;
 }
 
 .error {
-  color: red;
+  margin-top: 10px;
+  color: var(--red);
   font-weight: bold;
 }
 
-.results p {
-  margin: 8px 0;
-}
-
-.total-box {
-  border: 2px solid #bbb;
-  padding: 15px;
-  background: #f3f3f3;
-  margin-top: 20px;
-  border-radius: 6px;
+.hidden,
+.calculation-data {
+  display: none !important;
 }
 
 .negative {
-  color: red;
+  color: var(--red);
   font-weight: bold;
-}
-
-.comparison-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-}
-
-.comparison-table th,
-.comparison-table td {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: left;
-  vertical-align: top;
-}
-
-.comparison-table th {
-  background: #eee;
-}
-
-.comparison-box {
-  background: #f6f6f6;
 }
 
 .print-report {
   display: none;
+}
+
+body.results-mode .app-shell {
+  display: none;
+}
+
+body.results-mode .print-report {
+  display: block;
+}
+
+.report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.print-page {
+  position: relative;
+  margin-bottom: 22px;
+  padding: 34px;
+}
+
+.print-title {
+  margin: 0 0 5px;
+  color: var(--navy);
+  font-size: clamp(25px, 4vw, 34px);
+  line-height: 1.1;
+}
+
+.print-subtitle {
+  margin: 0 0 20px;
+  color: var(--mid-gray);
+  font-size: 14px;
+}
+
+.print-section-title {
+  margin: 22px 0 8px;
+  color: var(--navy);
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.print-table {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 14px;
+}
+
+.print-table th,
+.print-table td {
+  padding: 10px 11px;
+  border: 1px solid var(--rule);
+  vertical-align: middle;
+}
+
+.print-table th {
+  color: var(--navy);
+  background: var(--pale-blue);
+  font-weight: bold;
+}
+
+.print-table .numeric {
+  text-align: right;
+}
+
+.print-table .total-row td {
+  color: var(--navy);
+  background: var(--pale-gray);
+  border-top: 2px solid var(--blue);
+  font-weight: bold;
+}
+
+.print-table .current-row td {
+  background: var(--pale-gray);
+}
+
+.print-table .fourth-row td {
+  color: var(--navy);
+  background: var(--pale-green);
+  border-top: 2px solid var(--green);
+  font-weight: bold;
+}
+
+.print-result-box {
+  overflow: hidden;
+  margin-top: 8px;
+  border: 2px solid var(--green);
+  border-radius: 9px;
+  background: var(--pale-green);
+}
+
+.print-result-box.increase {
+  border-color: var(--red);
+  background: var(--pale-red);
+}
+
+.print-result-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #b9d8c7;
+  color: var(--navy);
+  font-weight: bold;
+}
+
+.print-result-box.increase .print-result-row {
+  border-bottom-color: #e6bfbd;
+}
+
+.print-result-row:last-child {
+  border-bottom: none;
+}
+
+.print-result-row.primary {
+  color: var(--green);
+  font-size: 17px;
+}
+
+.print-result-box.increase .print-result-row.primary {
+  color: var(--red);
+}
+
+.print-result-row.primary .print-result-value {
+  font-size: 29px;
+}
+
+.print-note {
+  margin: 10px 0 0;
+  color: var(--mid-gray);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.print-footer {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  body {
+    padding: 14px 10px;
+  }
+
+  .app-shell,
+  .print-page {
+    padding: 20px 16px;
+    border-radius: 10px;
+  }
+
+  .input-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .report-actions {
+    justify-content: stretch;
+  }
+
+  .report-actions button {
+    flex: 1 1 100%;
+  }
+
+  .print-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .print-result-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 3px;
+  }
 }
 
 @page {
@@ -129,9 +390,7 @@ button {
   }
 
   .container {
-    border: none;
-    border-radius: 0;
-    padding: 0;
+    max-width: none;
   }
 
   .container > *:not(.print-report) {
@@ -142,11 +401,17 @@ button {
     display: block !important;
   }
 
+  .screen-only {
+    display: none !important;
+  }
+
   .print-page {
-    position: relative;
-    box-sizing: border-box;
     min-height: 9.75in;
-    padding-bottom: 0.3in;
+    margin: 0;
+    padding: 0 0 0.3in;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
     page-break-after: always;
   }
 
@@ -156,90 +421,43 @@ button {
 
   .print-title {
     margin: 0 0 3px;
-    color: #17324d;
     font-size: 24px;
-    line-height: 1.1;
   }
 
   .print-subtitle {
     margin: 0 0 14px;
-    color: #667788;
     font-size: 10px;
   }
 
   .print-section-title {
     margin: 12px 0 6px;
-    color: #17324d;
     font-size: 13px;
-    line-height: 1.15;
   }
 
   .print-table {
-    width: 100%;
-    margin: 0;
-    border-collapse: collapse;
-    table-layout: fixed;
+    display: table;
+    overflow: visible;
+    white-space: normal;
     font-size: 9px;
   }
 
   .print-table th,
   .print-table td {
-    border: 1px solid #ccd6df;
     padding: 6px 7px;
-    vertical-align: middle;
-  }
-
-  .print-table th {
-    color: #17324d;
-    background: #eaf2f8;
-    font-weight: bold;
-  }
-
-  .print-table .numeric {
-    text-align: right;
-  }
-
-  .print-table .total-row td {
-    background: #f5f7f9;
-    border-top: 1.5px solid #245a86;
-    color: #17324d;
-    font-weight: bold;
-  }
-
-  .print-table .current-row td {
-    background: #f5f7f9;
-  }
-
-  .print-table .fourth-row td {
-    background: #e8f4ee;
-    border-top: 1.5px solid #1e6b47;
-    color: #17324d;
-    font-weight: bold;
   }
 
   .print-result-box {
     margin-top: 6px;
-    border: 1.5px solid #1e6b47;
-    background: #e8f4ee;
+    border-width: 1.5px;
+    border-radius: 0;
   }
 
   .print-result-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     padding: 7px 10px;
-    border-bottom: 1px solid #b9d8c7;
-    color: #17324d;
     font-size: 10px;
-    font-weight: bold;
-  }
-
-  .print-result-row:last-child {
-    border-bottom: none;
   }
 
   .print-result-row.primary {
-    color: #1e6b47;
     font-size: 11px;
   }
 
@@ -248,8 +466,7 @@ button {
   }
 
   .print-note {
-    margin: 7px 0 0;
-    color: #667788;
+    margin-top: 7px;
     font-size: 7.5px;
     line-height: 1.35;
   }
@@ -262,12 +479,11 @@ button {
     display: flex;
     justify-content: space-between;
     padding-top: 5px;
-    border-top: 1px solid #ccd6df;
-    color: #667788;
+    border-top: 1px solid var(--rule);
+    color: var(--mid-gray);
     font-size: 7px;
   }
 }
-
 </style>
 
 </head>
@@ -276,10 +492,16 @@ button {
 
 <div class="container">
 
-<h2>Stafford Connecticut Mill Rate Comparison Calculator</h2>
+<section id="inputView" class="app-shell">
+<h1 class="site-title">Stafford Connecticut Mill Rate Comparison Calculator</h1>
 
-<p style="margin-top:-8px;font-size:14px;color:#555;">
+<p class="site-status">
 The third budget referendum held on June 23, 2026, resulted in 795 yes and 957 no and was defeated. The budget will go to referendum for a fourth time on July 29, 2026. The proposed mill rate is 25.35.
+</p>
+
+<p class="entry-intro">
+  Enter the assessed values shown in Stafford Vision, add any motor vehicle assessments,
+  and select the Service District when applicable.
 </p>
 
 <div class="links">
@@ -297,6 +519,7 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
 </p>
 </div>
 
+<div class="input-grid">
 <div class="section">
 <h3>Real Estate</h3>
 <p>Current: 38.59 | Current Proposed: 25.35</p>
@@ -319,8 +542,9 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
 
 <p><strong>Total MV Assessment:</strong> <span id="mvTotal">-</span></p>
 </div>
+</div>
 
-<div class="section">
+<div class="section district-section">
 <label>
 <input type="checkbox" id="sdToggle"> Include Service District
 </label>
@@ -336,10 +560,12 @@ Current Service District tax applies only to real estate. Under the approved Ser
 </div>
 </div>
 
-<button onclick="calc()">Calculate</button>
+<button class="primary-button" onclick="showResults()">Calculate &amp; View Results</button>
 
 <div id="error" class="error"></div>
+</section>
 
+<div id="calculationData" class="calculation-data" aria-hidden="true">
 <hr>
 
 <div class="results">
@@ -455,8 +681,14 @@ Current Service District tax applies only to real estate. Under the approved Ser
 <div class="disclaimer">
 <strong>Important:</strong> This calculator is provided for reference purposes only. Estimated taxes are based solely on assessed values and mill rates and do not account for any exemptions, credits, abatements, or other adjustments that may apply to your property. Actual tax bills may vary. The proposed mill rates are subject to final adoption. For Service District calculations, the current motor vehicle Service District tax is treated as zero. The timeline comparison is informational and is based only on the values entered into this calculator. The original proposed mill rate was 26.44, then adjusted to 26.02 before the first referendum due to unexpected state revenue. After the first referendum failed, the proposed mill rate was adjusted to 25.66. The second referendum resulted in 813 yes and 1,103 no and was defeated. The proposed mill rate was then adjusted to 25.59 for the third referendum, held on June 23, 2026, which resulted in 795 yes and 957 no and was defeated. The fourth referendum is scheduled for July 29, 2026, with a proposed mill rate of 25.35.
 </div>
+</div>
 
 <div id="printReport" class="print-report" aria-hidden="true">
+  <div class="report-actions screen-only">
+    <button class="tertiary-button" type="button" onclick="startNewCalculation()">Start New Calculation</button>
+    <button class="secondary-button" type="button" onclick="editInputs()">Edit Information</button>
+    <button class="primary-button" type="button" onclick="printSummary()">Print Summary</button>
+  </div>
   <section class="print-page">
     <h1 class="print-title">Stafford Tax Estimate Summary</h1>
     <p class="print-subtitle">
@@ -957,6 +1189,11 @@ function buildPrintReport(){
   setPrintText('prMonthlyChangeLabel', 'Estimated monthly ' + monthlyDirection);
   setPrintText('prMonthlyChangeValue', money(monthlyChange));
 
+  const resultBox = document.querySelector('.print-result-box');
+  if(resultBox){
+    resultBox.classList.toggle('increase', annualChange > 0.005);
+  }
+
   const originalTax = readMoney('timelineOriginalTax');
   const firstTax = readMoney('timelineFirstRevisedTax');
   const secondTax = readMoney('timelineSecondReferendumTax');
@@ -974,6 +1211,50 @@ function buildPrintReport(){
       ? 'All proposal estimates include the 2.06 Service District rate on real estate and motor vehicles. The current baseline includes 3.05 on real estate and 0.00 on motor vehicles.'
       : 'Service District taxes are not included in this comparison.'
   );
+}
+
+function showResults(){
+  const realOld = getVal('realOld');
+  const realNew = getVal('realNew');
+
+  if(!realOld || !realNew){
+    setText('error', 'Enter real estate values.');
+    return;
+  }
+
+  calc();
+  buildPrintReport();
+
+  document.body.classList.add('results-mode');
+  const report = document.getElementById('printReport');
+  if(report){ report.setAttribute('aria-hidden', 'false'); }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function editInputs(){
+  document.body.classList.remove('results-mode');
+  const report = document.getElementById('printReport');
+  if(report){ report.setAttribute('aria-hidden', 'true'); }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function startNewCalculation(){
+  ['realOld', 'realNew', 'mv1', 'mv2', 'mv3', 'mv4'].forEach(function(id){
+    const el = document.getElementById(id);
+    if(el){ el.value = ''; }
+  });
+
+  const sdToggle = document.getElementById('sdToggle');
+  if(sdToggle){ sdToggle.checked = false; }
+
+  const sdBox = document.getElementById('sdBox');
+  const sdResults = document.getElementById('sdResults');
+  if(sdBox){ sdBox.classList.add('hidden'); }
+  if(sdResults){ sdResults.classList.add('hidden'); }
+
+  setText('error', '');
+  setText('mvTotal', '-');
+  editInputs();
 }
 
 function printSummary(){

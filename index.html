@@ -103,47 +103,171 @@ button {
   background: #f6f6f6;
 }
 
+.print-report {
+  display: none;
+}
+
+@page {
+  size: letter;
+  margin: 0.52in 0.58in;
+}
+
 @media print {
+  html,
   body {
-    max-width: 100%;
+    width: 100%;
     margin: 0;
-    padding: 10px;
+    padding: 0;
+    color: #273642;
+    background: white;
+    font-family: Arial, sans-serif;
+    line-height: 1.25;
   }
 
-  button {
+  body {
+    max-width: none;
+  }
+
+  .container {
+    border: none;
+    border-radius: 0;
+    padding: 0;
+  }
+
+  .container > *:not(.print-report) {
     display: none !important;
   }
 
-  .links {
-    background: none;
-    border: none;
-    padding: 0;
+  .print-report {
+    display: block !important;
   }
 
-  .section,
-  .total-box {
-    page-break-inside: avoid;
+  .print-page {
+    position: relative;
+    box-sizing: border-box;
+    min-height: 9.75in;
+    padding-bottom: 0.3in;
+    page-break-after: always;
   }
 
-  .total-box {
-    border: 2px solid black;
+  .print-page:last-child {
+    page-break-after: auto;
   }
 
-  input {
-    border: none;
-    padding: 0;
+  .print-title {
+    margin: 0 0 3px;
+    color: #17324d;
+    font-size: 24px;
+    line-height: 1.1;
+  }
+
+  .print-subtitle {
+    margin: 0 0 14px;
+    color: #667788;
+    font-size: 10px;
+  }
+
+  .print-section-title {
+    margin: 12px 0 6px;
+    color: #17324d;
+    font-size: 13px;
+    line-height: 1.15;
+  }
+
+  .print-table {
+    width: 100%;
     margin: 0;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: 9px;
+  }
+
+  .print-table th,
+  .print-table td {
+    border: 1px solid #ccd6df;
+    padding: 6px 7px;
+    vertical-align: middle;
+  }
+
+  .print-table th {
+    color: #17324d;
+    background: #eaf2f8;
     font-weight: bold;
   }
 
-  input::placeholder {
-    color: transparent;
+  .print-table .numeric {
+    text-align: right;
   }
 
-  .disclaimer {
+  .print-table .total-row td {
+    background: #f5f7f9;
+    border-top: 1.5px solid #245a86;
+    color: #17324d;
+    font-weight: bold;
+  }
+
+  .print-table .current-row td {
+    background: #f5f7f9;
+  }
+
+  .print-table .fourth-row td {
+    background: #e8f4ee;
+    border-top: 1.5px solid #1e6b47;
+    color: #17324d;
+    font-weight: bold;
+  }
+
+  .print-result-box {
+    margin-top: 6px;
+    border: 1.5px solid #1e6b47;
+    background: #e8f4ee;
+  }
+
+  .print-result-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 10px;
+    border-bottom: 1px solid #b9d8c7;
+    color: #17324d;
+    font-size: 10px;
+    font-weight: bold;
+  }
+
+  .print-result-row:last-child {
+    border-bottom: none;
+  }
+
+  .print-result-row.primary {
+    color: #1e6b47;
     font-size: 11px;
   }
+
+  .print-result-row.primary .print-result-value {
+    font-size: 19px;
+  }
+
+  .print-note {
+    margin: 7px 0 0;
+    color: #667788;
+    font-size: 7.5px;
+    line-height: 1.35;
+  }
+
+  .print-footer {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 5px;
+    border-top: 1px solid #ccd6df;
+    color: #667788;
+    font-size: 7px;
+  }
 }
+
 </style>
 
 </head>
@@ -332,6 +456,223 @@ Current Service District tax applies only to real estate. Under the approved Ser
 <strong>Important:</strong> This calculator is provided for reference purposes only. Estimated taxes are based solely on assessed values and mill rates and do not account for any exemptions, credits, abatements, or other adjustments that may apply to your property. Actual tax bills may vary. The proposed mill rates are subject to final adoption. For Service District calculations, the current motor vehicle Service District tax is treated as zero. The timeline comparison is informational and is based only on the values entered into this calculator. The original proposed mill rate was 26.44, then adjusted to 26.02 before the first referendum due to unexpected state revenue. After the first referendum failed, the proposed mill rate was adjusted to 25.66. The second referendum resulted in 813 yes and 1,103 no and was defeated. The proposed mill rate was then adjusted to 25.59 for the third referendum, held on June 23, 2026, which resulted in 795 yes and 957 no and was defeated. The fourth referendum is scheduled for July 29, 2026, with a proposed mill rate of 25.35.
 </div>
 
+<div id="printReport" class="print-report" aria-hidden="true">
+  <section class="print-page">
+    <h1 class="print-title">Stafford Tax Estimate Summary</h1>
+    <p class="print-subtitle">
+      Fourth referendum - July 29, 2026 | Proposed mill rate: 25.35 |
+      <span id="prDistrictStatus">Service District not included</span>
+    </p>
+
+    <h2 class="print-section-title">Property and assessment data</h2>
+    <table class="print-table">
+      <thead>
+        <tr>
+          <th>Assessment input</th>
+          <th class="numeric">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2024 real estate assessed value</td>
+          <td id="prRealOld" class="numeric">-</td>
+        </tr>
+        <tr>
+          <td>2025 real estate assessed value</td>
+          <td id="prRealNew" class="numeric">-</td>
+        </tr>
+        <tr>
+          <td>Motor vehicle assessment</td>
+          <td id="prMvTotal" class="numeric">-</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 class="print-section-title">Estimated annual tax breakdown</h2>
+    <table class="print-table">
+      <thead>
+        <tr>
+          <th style="width:42%;">Tax component</th>
+          <th class="numeric">Current</th>
+          <th class="numeric">Fourth referendum</th>
+          <th class="numeric">Change</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Real estate</td>
+          <td id="prRealOldAnnual" class="numeric">-</td>
+          <td id="prRealNewAnnual" class="numeric">-</td>
+          <td id="prRealChangeAnnual" class="numeric">-</td>
+        </tr>
+        <tr>
+          <td>Motor vehicle</td>
+          <td id="prMvOldAnnual" class="numeric">-</td>
+          <td id="prMvNewAnnual" class="numeric">-</td>
+          <td id="prMvChangeAnnual" class="numeric">-</td>
+        </tr>
+        <tr id="prSdRealRow">
+          <td>Service District - real estate</td>
+          <td id="prSdRealOldAnnual" class="numeric">-</td>
+          <td id="prSdRealNewAnnual" class="numeric">-</td>
+          <td id="prSdRealChangeAnnual" class="numeric">-</td>
+        </tr>
+        <tr id="prSdMvRow">
+          <td>Service District - motor vehicle</td>
+          <td id="prSdMvOldAnnual" class="numeric">-</td>
+          <td id="prSdMvNewAnnual" class="numeric">-</td>
+          <td id="prSdMvChangeAnnual" class="numeric">-</td>
+        </tr>
+        <tr class="total-row">
+          <td>Combined annual total</td>
+          <td id="prOldTotal" class="numeric">-</td>
+          <td id="prNewTotal" class="numeric">-</td>
+          <td id="prChangeTotal" class="numeric">-</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 class="print-section-title">Mill rates used</h2>
+    <table class="print-table">
+      <thead>
+        <tr>
+          <th>Rate applied</th>
+          <th class="numeric">Current</th>
+          <th class="numeric">Fourth referendum</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Real estate mill rate</td>
+          <td class="numeric">38.59</td>
+          <td class="numeric">25.35</td>
+        </tr>
+        <tr>
+          <td>Motor vehicle mill rate</td>
+          <td class="numeric">32.46</td>
+          <td class="numeric">25.35</td>
+        </tr>
+        <tr id="prSdRateRow">
+          <td>Service District mill rate</td>
+          <td class="numeric">3.05 real estate / 0.00 vehicle</td>
+          <td class="numeric">2.06</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 class="print-section-title">Estimated result</h2>
+    <div class="print-result-box">
+      <div class="print-result-row primary">
+        <span id="prAnnualChangeLabel">Estimated annual change</span>
+        <span id="prAnnualChangeValue" class="print-result-value">-</span>
+      </div>
+      <div class="print-result-row">
+        <span id="prMonthlyChangeLabel">Estimated monthly change</span>
+        <span id="prMonthlyChangeValue">-</span>
+      </div>
+      <div class="print-result-row">
+        <span>Estimated percent change</span>
+        <span id="prPercentChange">-</span>
+      </div>
+    </div>
+
+    <p class="print-note">
+      <strong>Source:</strong> Stafford Vision Government Solutions property records.
+      Calculator: townofstafford.github.io/Town-Tax-Calculator/
+    </p>
+    <p class="print-note">
+      <strong>Important:</strong> This estimate is for reference only and does not account for
+      exemptions, credits, abatements, or other adjustments. Actual tax bills may vary.
+      The proposed mill rate is subject to final adoption.
+    </p>
+
+    <div class="print-footer">
+      <span id="prPreparedDate">Prepared</span>
+      <span>Page 1</span>
+    </div>
+  </section>
+
+  <section class="print-page">
+    <h1 class="print-title">Referendum-by-Referendum Comparison</h1>
+    <p class="print-subtitle">
+      Fourth referendum - July 29, 2026 |
+      <span id="prComparisonDistrictStatus">Service District not included</span> |
+      2024 assessment <span id="prComparisonRealOld">-</span> |
+      2025 assessment <span id="prComparisonRealNew">-</span> |
+      Vehicle assessment <span id="prComparisonMvTotal">-</span>
+    </p>
+
+    <h2 class="print-section-title">Estimated impact at each budget stage</h2>
+    <table class="print-table">
+      <thead>
+        <tr>
+          <th style="width:34%;">Budget stage</th>
+          <th class="numeric">Mill rate</th>
+          <th class="numeric">Annual tax</th>
+          <th class="numeric">Vs. current</th>
+          <th class="numeric">Vs. prior proposal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="current-row">
+          <td><strong>Current tax baseline</strong></td>
+          <td class="numeric">38.59 RE / 32.46 MV</td>
+          <td id="prTimelineCurrentTax" class="numeric">-</td>
+          <td class="numeric">$0.00</td>
+          <td class="numeric">-</td>
+        </tr>
+        <tr>
+          <td>Original proposal</td>
+          <td class="numeric">26.44</td>
+          <td id="prTimelineOriginalTax" class="numeric">-</td>
+          <td id="prTimelineOriginalDiff" class="numeric">-</td>
+          <td class="numeric">-</td>
+        </tr>
+        <tr>
+          <td>First referendum - defeated<br><small>579 yes / 1,026 no</small></td>
+          <td class="numeric">26.02</td>
+          <td id="prTimelineFirstTax" class="numeric">-</td>
+          <td id="prTimelineFirstDiff" class="numeric">-</td>
+          <td id="prTimelineFirstPrior" class="numeric">-</td>
+        </tr>
+        <tr>
+          <td>Second referendum - defeated<br><small>813 yes / 1,103 no</small></td>
+          <td class="numeric">25.66</td>
+          <td id="prTimelineSecondTax" class="numeric">-</td>
+          <td id="prTimelineSecondDiff" class="numeric">-</td>
+          <td id="prTimelineSecondPrior" class="numeric">-</td>
+        </tr>
+        <tr>
+          <td>Third referendum - June 23 - defeated<br><small>795 yes / 957 no</small></td>
+          <td class="numeric">25.59</td>
+          <td id="prTimelineThirdTax" class="numeric">-</td>
+          <td id="prTimelineThirdDiff" class="numeric">-</td>
+          <td id="prTimelineThirdPrior" class="numeric">-</td>
+        </tr>
+        <tr class="fourth-row">
+          <td>Fourth referendum - July 29</td>
+          <td class="numeric">25.35</td>
+          <td id="prTimelineFourthTax" class="numeric">-</td>
+          <td id="prTimelineFourthDiff" class="numeric">-</td>
+          <td id="prTimelineFourthPrior" class="numeric">-</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p id="prTimelineRateNote" class="print-note"></p>
+    <p class="print-note">
+      <strong>Reading the table:</strong> "Vs. current" compares each stage with the current annual
+      tax estimate. "Vs. prior proposal" shows the change from the immediately preceding proposal.
+      Negative values indicate a lower estimated annual tax.
+    </p>
+
+    <div class="print-footer">
+      <span id="prPreparedDatePage2">Prepared</span>
+      <span>Page 2</span>
+    </div>
+  </section>
+</div>
+
 </div>
 
 <script>
@@ -513,9 +854,148 @@ function calc(){
   setMoney('timelineFourthReferendumDiff', fourthReferendumTax - currentCombinedTax);
 }
 
+function signedMoney(value){
+  const amount = Number(value) || 0;
+  if(Math.abs(amount) < 0.005){ return money(0); }
+  return (amount > 0 ? '+' : '') + money(amount);
+}
+
+function readMoney(id){
+  const el = document.getElementById(id);
+  if(!el){ return 0; }
+
+  const text = el.innerText || '';
+  const negative = text.trim().startsWith('-');
+  const value = parseFloat(text.replace(/[^0-9.]/g, '')) || 0;
+  return negative ? -value : value;
+}
+
+function setPrintText(id, value){
+  const el = document.getElementById(id);
+  if(el){ el.innerText = value; }
+}
+
+function setPrintRowVisible(id, visible){
+  const el = document.getElementById(id);
+  if(el){ el.style.display = visible ? '' : 'none'; }
+}
+
+function buildPrintReport(){
+  const sdOn = document.getElementById('sdToggle') ? document.getElementById('sdToggle').checked : false;
+  const districtStatus = sdOn ? 'Service District included' : 'Service District not included';
+  const prepared = 'Prepared ' + new Date().toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+
+  const realOld = getVal('realOld');
+  const realNew = getVal('realNew');
+  const mvTotal = getVal('mv1') + getVal('mv2') + getVal('mv3') + getVal('mv4');
+
+  setPrintText('prDistrictStatus', districtStatus);
+  setPrintText('prComparisonDistrictStatus', districtStatus);
+  setPrintText('prPreparedDate', prepared);
+  setPrintText('prPreparedDatePage2', prepared);
+
+  setPrintText('prRealOld', money(realOld));
+  setPrintText('prRealNew', money(realNew));
+  setPrintText('prMvTotal', money(mvTotal));
+  setPrintText('prComparisonRealOld', money(realOld));
+  setPrintText('prComparisonRealNew', money(realNew));
+  setPrintText('prComparisonMvTotal', money(mvTotal));
+
+  [
+    ['prRealOldAnnual', 'realOldAnnual'],
+    ['prRealNewAnnual', 'realNewAnnual'],
+    ['prRealChangeAnnual', 'realChangeAnnual'],
+    ['prMvOldAnnual', 'mvOldAnnual'],
+    ['prMvNewAnnual', 'mvNewAnnual'],
+    ['prMvChangeAnnual', 'mvChangeAnnual'],
+    ['prSdRealOldAnnual', 'sdRealOldAnnual'],
+    ['prSdRealNewAnnual', 'sdRealNewAnnual'],
+    ['prSdMvOldAnnual', 'sdMvOldAnnual'],
+    ['prSdMvNewAnnual', 'sdMvNewAnnual'],
+    ['prOldTotal', 'oldTotal'],
+    ['prNewTotal', 'newTotal'],
+    ['prChangeTotal', 'changeTotal'],
+    ['prPercentChange', 'percentChange'],
+    ['prTimelineCurrentTax', 'timelineCurrentTax'],
+    ['prTimelineOriginalTax', 'timelineOriginalTax'],
+    ['prTimelineOriginalDiff', 'timelineOriginalDiff'],
+    ['prTimelineFirstTax', 'timelineFirstRevisedTax'],
+    ['prTimelineFirstDiff', 'timelineFirstRevisedDiff'],
+    ['prTimelineSecondTax', 'timelineSecondReferendumTax'],
+    ['prTimelineSecondDiff', 'timelineSecondReferendumDiff'],
+    ['prTimelineThirdTax', 'timelineThirdReferendumTax'],
+    ['prTimelineThirdDiff', 'timelineThirdReferendumDiff'],
+    ['prTimelineFourthTax', 'timelineFourthReferendumTax'],
+    ['prTimelineFourthDiff', 'timelineFourthReferendumDiff']
+  ].forEach(function(pair){
+    const source = document.getElementById(pair[1]);
+    setPrintText(pair[0], source ? source.innerText : '-');
+  });
+
+  const sdRealOld = readMoney('sdRealOldAnnual');
+  const sdRealNew = readMoney('sdRealNewAnnual');
+  const sdMvOld = readMoney('sdMvOldAnnual');
+  const sdMvNew = readMoney('sdMvNewAnnual');
+
+  setPrintText('prSdRealChangeAnnual', signedMoney(sdRealNew - sdRealOld));
+  setPrintText('prSdMvChangeAnnual', signedMoney(sdMvNew - sdMvOld));
+  setPrintRowVisible('prSdRealRow', sdOn);
+  setPrintRowVisible('prSdMvRow', sdOn);
+  setPrintRowVisible('prSdRateRow', sdOn);
+
+  const annualChange = readMoney('changeTotal');
+  const monthlyChange = readMoney('monthlyChange');
+  const direction = annualChange < -0.005 ? 'decrease' : (annualChange > 0.005 ? 'increase' : 'change');
+  const monthlyDirection = monthlyChange < -0.005 ? 'decrease' : (monthlyChange > 0.005 ? 'increase' : 'change');
+
+  setPrintText('prAnnualChangeLabel', 'Estimated annual ' + direction);
+  setPrintText('prAnnualChangeValue', money(annualChange));
+  setPrintText('prMonthlyChangeLabel', 'Estimated monthly ' + monthlyDirection);
+  setPrintText('prMonthlyChangeValue', money(monthlyChange));
+
+  const originalTax = readMoney('timelineOriginalTax');
+  const firstTax = readMoney('timelineFirstRevisedTax');
+  const secondTax = readMoney('timelineSecondReferendumTax');
+  const thirdTax = readMoney('timelineThirdReferendumTax');
+  const fourthTax = readMoney('timelineFourthReferendumTax');
+
+  setPrintText('prTimelineFirstPrior', signedMoney(firstTax - originalTax));
+  setPrintText('prTimelineSecondPrior', signedMoney(secondTax - firstTax));
+  setPrintText('prTimelineThirdPrior', signedMoney(thirdTax - secondTax));
+  setPrintText('prTimelineFourthPrior', signedMoney(fourthTax - thirdTax));
+
+  setPrintText(
+    'prTimelineRateNote',
+    sdOn
+      ? 'All proposal estimates include the 2.06 Service District rate on real estate and motor vehicles. The current baseline includes 3.05 on real estate and 0.00 on motor vehicles.'
+      : 'Service District taxes are not included in this comparison.'
+  );
+}
+
 function printSummary(){
+  const realOld = getVal('realOld');
+  const realNew = getVal('realNew');
+
+  if(!realOld || !realNew){
+    setText('error', 'Enter real estate values before printing.');
+    return;
+  }
+
+  calc();
+  buildPrintReport();
   window.print();
 }
+
+window.addEventListener('beforeprint', function(){
+  if(getVal('realOld') && getVal('realNew')){
+    calc();
+    buildPrintReport();
+  }
+});
 </script>
 
 </body>

@@ -155,7 +155,7 @@ button {
 <h2>Stafford Connecticut Mill Rate Comparison Calculator</h2>
 
 <p style="margin-top:-8px;font-size:14px;color:#555;">
-Updated after the second budget referendum on 6/2/2026 resulted in 813 yes and 1,103 no and was defeated. The current updated proposed mill rate is 25.59.
+The third budget referendum held on June 23, 2026, resulted in 795 yes and 957 no and was defeated. The budget will go to referendum for a fourth time on July 29, 2026. The proposed mill rate is 25.35.
 </p>
 
 <div class="links">
@@ -175,7 +175,7 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
 
 <div class="section">
 <h3>Real Estate</h3>
-<p>Current: 38.59 | Current Proposed: 25.59</p>
+<p>Current: 38.59 | Current Proposed: 25.35</p>
 
 <label>2024 Assessed Value</label>
 <input type="number" id="realOld">
@@ -186,7 +186,7 @@ Search by name or property location and use the <strong>Net Assessment</strong> 
 
 <div class="section">
 <h3>Motor Vehicles</h3>
-<p>Current: 32.46 | Current Proposed: 25.59</p>
+<p>Current: 32.46 | Current Proposed: 25.35</p>
 
 <input type="number" id="mv1" placeholder="Vehicle 1">
 <input type="number" id="mv2" placeholder="Vehicle 2">
@@ -253,7 +253,7 @@ Current Service District tax applies only to real estate. Under the approved Ser
 <div class="section comparison-box">
   <h3>Proposed Mill Rate Timeline Comparison</h3>
   <p style="font-size:13px;">
-    This section compares the total estimated tax impact, including Service District taxes when selected, with the original proposed rate, the first revised proposed rate, the second referendum proposed rate, and the current updated proposed rate.
+    This section compares the total estimated tax impact, including Service District taxes when selected, with the original proposed rate and each subsequent referendum proposal, including the fourth referendum proposal scheduled for July 29, 2026.
   </p>
 
   <table class="comparison-table">
@@ -291,10 +291,16 @@ Current Service District tax applies only to real estate. Under the approved Ser
         <td id="timelineSecondReferendumDiff">-</td>
       </tr>
       <tr>
-        <td><strong>Current Updated Proposed</strong></td>
-        <td><strong>25.59</strong></td>
-        <td id="timelineCurrentProposedTax">-</td>
-        <td id="timelineCurrentProposedDiff">-</td>
+        <td>Third Referendum Proposed<br><small>Third referendum: June 23, 2026 — 795 Yes, 957 No — Defeated</small></td>
+        <td>25.59</td>
+        <td id="timelineThirdReferendumTax">-</td>
+        <td id="timelineThirdReferendumDiff">-</td>
+      </tr>
+      <tr>
+        <td><strong>Fourth Referendum Proposed</strong><br><small>Referendum scheduled for July 29, 2026</small></td>
+        <td><strong>25.35</strong></td>
+        <td id="timelineFourthReferendumTax">-</td>
+        <td id="timelineFourthReferendumDiff">-</td>
       </tr>
     </tbody>
   </table>
@@ -323,7 +329,7 @@ Current Service District tax applies only to real estate. Under the approved Ser
 </div>
 
 <div class="disclaimer">
-<strong>Important:</strong> This calculator is provided for reference purposes only. Estimated taxes are based solely on assessed values and mill rates and do not account for any exemptions, credits, abatements, or other adjustments that may apply to your property. Actual tax bills may vary. The proposed mill rates are subject to final adoption. For Service District calculations, the current motor vehicle Service District tax is treated as zero. The timeline comparison is informational and is based only on the values entered into this calculator. The original proposed mill rate was 26.44, then adjusted to 26.02 before the first referendum due to unexpected state revenue. After the first referendum failed, the proposed mill rate was adjusted to 25.66. The second referendum resulted in 813 yes and 1,103 no and was defeated. The current updated proposed mill rate shown in this calculator is 25.59.
+<strong>Important:</strong> This calculator is provided for reference purposes only. Estimated taxes are based solely on assessed values and mill rates and do not account for any exemptions, credits, abatements, or other adjustments that may apply to your property. Actual tax bills may vary. The proposed mill rates are subject to final adoption. For Service District calculations, the current motor vehicle Service District tax is treated as zero. The timeline comparison is informational and is based only on the values entered into this calculator. The original proposed mill rate was 26.44, then adjusted to 26.02 before the first referendum due to unexpected state revenue. After the first referendum failed, the proposed mill rate was adjusted to 25.66. The second referendum resulted in 813 yes and 1,103 no and was defeated. The proposed mill rate was then adjusted to 25.59 for the third referendum, held on June 23, 2026, which resulted in 795 yes and 957 no and was defeated. The fourth referendum is scheduled for July 29, 2026, with a proposed mill rate of 25.35.
 </div>
 
 </div>
@@ -405,10 +411,10 @@ function calc(){
   const sdOn = document.getElementById('sdToggle') ? document.getElementById('sdToggle').checked : false;
 
   const realOldAnnual = (realOld / 1000) * 38.59;
-  const realNewAnnual = (realNew / 1000) * 25.59;
+  const realNewAnnual = (realNew / 1000) * 25.35;
 
   const mvOldAnnual = (mvTotal / 1000) * 32.46;
-  const mvNewAnnual = (mvTotal / 1000) * 25.59;
+  const mvNewAnnual = (mvTotal / 1000) * 25.35;
 
   let sdRealOldAnnual = 0;
   let sdRealNewAnnual = 0;
@@ -475,7 +481,8 @@ function calc(){
   let originalProposalTax = ((realNew + mvTotal) / 1000) * 26.44;
   let firstRevisedTax = ((realNew + mvTotal) / 1000) * 26.02;
   let secondReferendumTax = ((realNew + mvTotal) / 1000) * 25.66;
-  let currentProposalTax = ((realNew + mvTotal) / 1000) * 25.59;
+  let thirdReferendumTax = ((realNew + mvTotal) / 1000) * 25.59;
+  let fourthReferendumTax = ((realNew + mvTotal) / 1000) * 25.35;
 
   if(sdOn){
     currentCombinedTax += sdOldAnnual;
@@ -483,7 +490,8 @@ function calc(){
     originalProposalTax += ((realNew / 1000) * 2.06) + ((mvTotal / 1000) * 2.06);
     firstRevisedTax += ((realNew / 1000) * 2.06) + ((mvTotal / 1000) * 2.06);
     secondReferendumTax += ((realNew / 1000) * 2.06) + ((mvTotal / 1000) * 2.06);
-    currentProposalTax += ((realNew / 1000) * 2.06) + ((mvTotal / 1000) * 2.06);
+    thirdReferendumTax += ((realNew / 1000) * 2.06) + ((mvTotal / 1000) * 2.06);
+    fourthReferendumTax += ((realNew / 1000) * 2.06) + ((mvTotal / 1000) * 2.06);
   }
 
   setMoney('timelineCurrentTax', currentCombinedTax);
@@ -498,8 +506,11 @@ function calc(){
   setMoney('timelineSecondReferendumTax', secondReferendumTax);
   setMoney('timelineSecondReferendumDiff', secondReferendumTax - currentCombinedTax);
 
-  setMoney('timelineCurrentProposedTax', currentProposalTax);
-  setMoney('timelineCurrentProposedDiff', currentProposalTax - currentCombinedTax);
+  setMoney('timelineThirdReferendumTax', thirdReferendumTax);
+  setMoney('timelineThirdReferendumDiff', thirdReferendumTax - currentCombinedTax);
+
+  setMoney('timelineFourthReferendumTax', fourthReferendumTax);
+  setMoney('timelineFourthReferendumDiff', fourthReferendumTax - currentCombinedTax);
 }
 
 function printSummary(){
